@@ -1,0 +1,32 @@
+{
+  "name": "gp1.0",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.12.2",
+    "cookie-universal-nuxt": "^2.1.4",
+    "core-js": "^3.6.5",
+    "element-ui": "^2.13.2",
+    "hls.js": "^0.14.16",
+    "nuxt": "^2.14.6",
+    "ua-parser-js": "^0.7.22",
+    "vue-infinite-scroll": "^2.0.2",
+    "xgplayer": "^2.13.0",
+    "xgplayer-hls.js": "^2.2.5",
+    "xgplayer-mp4": "^1.2.0"
+  },
+  "devDependencies": {
+    "@vue/test-utils": "^1.1.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^26.5.0",
+    "jest": "^26.5.0",
+    "vue-jest": "^3.0.4"
+  }
+}
