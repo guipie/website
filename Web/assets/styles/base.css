@@ -1,0 +1,35 @@
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 1.5s;
+}
+
+.page-enter,
+.page-leave-active {
+  opacity: 0;
+}
+
+body {
+  margin: 0%;
+  background: url("/background.jpg") no-repeat;
+  background-size: cover;
+}
+
+
+.container {
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  color: #ffffff;
+  height: 100%;
+}
+
+.carousel .is-active button {
+  background-color: #000;
+}
+
+.carousel-h3 {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: inherit;
+}

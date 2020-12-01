@@ -1,0 +1,6 @@
+{
+    "singleQuote": true, // 使用单引号 `.vscode/settings.json` 的`prettier.semi`
+    "semi": false, // 结尾不加分号 `.vscode/settings.json` 的`prettier.semi`
+    "printWidth": 120 // 此项为我自加以上两项为默认，表示每行最多显示的字符数，默认为80，本人觉得太短了，因此修改了一下，必须与`.vscode/settings.json` 的`prettier.printWidth`对应上
+/* 更多配置请戳 https://prettier.io/docs/en/options.html */
+}
