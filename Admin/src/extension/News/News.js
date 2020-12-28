@@ -27,7 +27,7 @@ let extension = {
         value: 'Add',
         type: 'info',
         onClick: function () {
-          window.open("/news/create");
+          window.open("/create");
         }
       });
       this.buttons.splice(3, 1, {
@@ -40,7 +40,7 @@ let extension = {
           if (rows.length == 0 || rows.length > 1) {
             return this.$Message.error("请选中一行数据")
           }
-          window.open("/news/create?newsId=" + rows[0].NewsId);
+          window.open("/create?newsId=" + rows[0].NewsId);
         }
       })
     },

@@ -1,20 +1,22 @@
 const thisFunc = {
-  GetTagsByKey(key, vm) {
-    if (key !== "") {
+  GetTagsByKey (key, vm) {
+    if (key !== "")
+    {
       vm.http.get("api/newstag/getByKey?value=" + key.toLowerCase()).then((data) => {
         vm.loading = false;
         vm.tags = data.filter((item) => {
           return item.value.toLowerCase().indexOf(key.toLowerCase()) > -1;
         });
       });
-    } else {
+    } else
+    {
       vm.tags = [];
     }
   },
-  Add(vm) {
-    vm.formFileds.CoverImageUrls = vm.seletedCovers.map((m) => m.path).toString();
+  Add (vm) {
+    vm.formFileds.CoverImageUrls = (vm.seletedCovers || []).map((m) => m.path).toString();
     console.log(vm.formFileds);
-    vm.http.post(`api/news/${vm.formFileds.NewsId>0 ? 'update' : 'add'}`, {
+    vm.http.post(`api/news/${vm.formFileds.NewsId > 0 ? 'update' : 'add'}`, {
       MainData: vm.formFileds,
       DetailData: vm.formFileds.NewsTypes.map((m) => {
         return {
@@ -24,7 +26,8 @@ const thisFunc = {
       }),
       Extra: vm.formFileds.Tags.toString()
     }, "正在保存中,请稍后..").then((data) => {
-      if (data.status) {
+      if (data.status)
+      {
         vm.$notify.success({
           title: '发布提示,[5秒后关闭.]',
           message: data.message,

@@ -5,14 +5,11 @@
         <h3>{{ detail.title }}</h3>
       </div>
       <div class="detail-body">
-        <xg_mp4_player
-          v-if="detail.videoUrl"
-          :playUrl="getVideoUrl()"
-          :playType="'mp4'"
-        ></xg_mp4_player>
+        <xg_mp4_player v-if="detail.videoUrl" :playUrl="getVideoUrl()" :playType="'mp4'"></xg_mp4_player>
         <p v-else v-html="detail.content"></p>
       </div>
     </el-card>
+    <newsComment :type="'news'"></newsComment>
   </div>
 </template>
 <script>  
@@ -20,44 +17,47 @@ import {
   GetFileUrl
 } from '@/environment'
 import xg_mp4_player from "~/components/moviePlayer/xg_mp4_player.vue";
+import newsComment from '~/components/comment';
 export default {
-  fetch({ store, params }) {
+  fetch ({ store, params }) {
+    this.newsId = params.id;
     return Promise.all([
       store.dispatch('news/fetchOneNews', params.id),
     ])
   },
   computed: {
-    detail() {
+    detail () {
       return this.$store.state.news.detail;
     },
-    videoUrl() {
+    videoUrl () {
 
     }
   },
-  data() {
+  data () {
     return {
+      newsId: 0
     }
   },
-  mounted() {
+  mounted () {
     console.log(this.playList)
   },
   methods: {
-    getVideoUrl() { return GetFileUrl(this.detail.videoUrl); }
+    getVideoUrl () { return GetFileUrl(this.detail.videoUrl); }
   },
-  components: { xg_mp4_player },
-  head() {
+  components: { xg_mp4_player, newsComment },
+  head () {
     return {
-      title: this.detail?.title || 'guipie',
+      title: this.detail?.title + '-诡瞥,恐怖灵异网站',
       meta: [
         {
           hid: 'keywords',
           name: 'keywords',
-          content: this.article?.title
+          content: this.detail?.title || "诡瞥,恐怖灵异网站"
         },
         {
           hid: 'description',
           name: 'description',
-          content: this.detail?.Summary || "guipie"
+          content: this.detail?.Summary || "诡瞥,恐怖灵异网站"
         }
       ]
     }

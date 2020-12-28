@@ -1,35 +1,35 @@
 <template>
   <div id="player"></div>
-</template> 
- 
-<script> 
+</template>
+
+<script>
 let currentPlayer;
 export default {
   props: {
     playUrl: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {
     playUrl(val) {
-      currentPlayer.src = val;
+      (currentPlayer || {}).src = val;
       if (!this.init) {
         currentPlayer.destroy(false);
         this.palyerInit();
       }
-    }
+    },
   },
   data() {
     return {
-      init: false
-    }
+      init: false,
+    };
   },
   mounted() {
     this.palyerInit();
   },
   beforeDestroy: function () {
-    currentPlayer.src = "";
+    (currentPlayer || {}).src = "";
     currentPlayer.destroy(true);
   },
   methods: {
@@ -37,23 +37,23 @@ export default {
       if (process.browser) {
         let _this = this;
         let Player = require("xgplayer");
-        require('xgplayer-mp4');
+        require("xgplayer-mp4");
         currentPlayer = new Player({
-          id: 'player',
+          id: "player",
           url: this.playUrl,
           preloadTime: 30, // 默认预加载 30 秒
           videoInit: true,
           autoplay: true,
           playsinline: true,
           playbackRate: [0.5, 0.75, 1, 1.5, 2],
-          fluid: true
-        })
-        currentPlayer.once('complete', () => {
+          fluid: true,
+        });
+        currentPlayer.once("complete", () => {
           console.log("complete");
           _this.init = true;
-        })
+        });
       }
-    }
-  }
-} 
+    },
+  },
+};
 </script>

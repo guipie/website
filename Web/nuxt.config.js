@@ -2,72 +2,72 @@ import appConfig from './config/app.config.js'
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: '诡瞥社区,一个恐怖灵异社区',
+    title: appConfig.meta.title,
     meta: [{
-        charset: 'utf-8'
-      },
-      {
-        'http-equiv': 'cleartype',
-        content: 'on'
-      },
-      {
-        'http-equiv': 'x-dns-prefetch-control',
-        content: 'on'
-      },
-      {
-        name: 'author',
-        content: appConfig.meta.email
-      },
-      {
-        name: 'MobileOptimized',
-        content: '320'
-      },
-      {
-        name: 'HandheldFriendly',
-        content: 'True'
-      },
-      {
-        name: 'apple-mobile-web-app-capable',
-        content: 'yes'
-      },
-      {
-        name: 'apple-mobile-web-app-status-bar-style',
-        content: 'black'
-      },
-      {
-        name: 'apple-mobile-web-app-title',
-        content: appConfig.meta.title
-      },
-      {
-        name: 'apple-touch-icon',
-        content: '/static/icon.png'
-      },
-      {
-        name: 'msapplication-TileImage',
-        content: '/static/icon.png'
-      },
-      {
-        name: 'msapplication-TileColor',
-        content: appConfig.color.primary
-      },
-      {
-        name: 'format-detection',
-        content: 'telephone=no'
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1.0, user-scalable=no'
-      },
-      {
-        hid: 'keywords',
-        name: 'keywords',
-        content: appConfig.meta.keywords
-      },
-      {
-        hid: 'description',
-        name: 'description',
-        content: appConfig.meta.description
-      }
+      charset: 'utf-8'
+    },
+    {
+      'http-equiv': 'cleartype',
+      content: 'on'
+    },
+    {
+      'http-equiv': 'x-dns-prefetch-control',
+      content: 'on'
+    },
+    {
+      name: 'author',
+      content: appConfig.meta.email
+    },
+    {
+      name: 'MobileOptimized',
+      content: '320'
+    },
+    {
+      name: 'HandheldFriendly',
+      content: 'True'
+    },
+    {
+      name: 'apple-mobile-web-app-capable',
+      content: 'yes'
+    },
+    {
+      name: 'apple-mobile-web-app-status-bar-style',
+      content: 'black'
+    },
+    {
+      name: 'apple-mobile-web-app-title',
+      content: appConfig.meta.title
+    },
+    {
+      name: 'apple-touch-icon',
+      content: '/static/icon.png'
+    },
+    {
+      name: 'msapplication-TileImage',
+      content: '/static/icon.png'
+    },
+    {
+      name: 'msapplication-TileColor',
+      content: appConfig.color.primary
+    },
+    {
+      name: 'format-detection',
+      content: 'telephone=no'
+    },
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1.0, user-scalable=no'
+    },
+    {
+      hid: 'keywords',
+      name: 'keywords',
+      content: appConfig.meta.keywords
+    },
+    {
+      hid: 'description',
+      name: 'description',
+      content: appConfig.meta.description
+    }
     ],
     link: [{
       rel: 'icon',
@@ -103,7 +103,9 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [],
-
+  styleResources: {
+    scss: []
+  },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     transpile: [/^element-ui/],

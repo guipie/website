@@ -1,133 +1,65 @@
 <template>
   <div class="content" v-cloak>
     <Tabs v-model="newsType">
-      <TabPane label="图文" icon="ios-link" name="article"></TabPane>
+      <TabPane label="诡闻" icon="ios-add-circle" name="micro"></TabPane>
+      <TabPane label="长图文" icon="ios-link" name="article"></TabPane>
       <Tab-pane label="视频" icon="ios-videocam" name="video"></Tab-pane>
     </Tabs>
     <div style="padding-top: 15px">
-      <VolForm
-        ref="mainFieds"
-        :label-width="90"
-        :formFileds="formFileds"
-        :formRules="formRules1"
-      ></VolForm>
-      <div class="v-kind" v-if="newsType == 'article'">
-        <label class="ivu-form-item-label" style="width: 90px"
-          >发布内容：</label
-        >
+      <VolForm ref="mainFieds" :label-width="newsType=='micro'?0:90" :formFileds="formFileds" :formRules="formRules1">
+      </VolForm>
+      <div v-if="newsType == 'article'" class="v-kind">
+        <label class="ivu-form-item-label" style="width: 90px">发布内容：</label>
         <div>
-          <kind-editor
-            :content="formFileds.Content"
-            :UploadImgUrl="'/api/news/upload'"
-            :uploadJson="'/api/news/kindEditorUpload'"
-            ref="editor"
-            height="450px"
-          ></kind-editor>
+          <kind-editor :content="formFileds.Content" :UploadImgUrl="'/api/news/upload'"
+            :uploadJson="'/api/news/kindEditorUpload'" ref="editor" height="450px"></kind-editor>
         </div>
       </div>
-      <div v-else>
+      <div v-if="newsType == 'video'">
         <VideoUpload :playUrl="formFileds.VideoUrl"></VideoUpload>
       </div>
       <Form ref="formInline" inline>
-        <FormItem label="封面选择：" style="width: 40%">
-          <el-image
-            v-for="img in seletedCovers"
-            style="width: 60px; height: 50px; padding: 2px"
-            :src="img.path"
-            fit="contain"
-            :key="img.name"
-          ></el-image>
-          <Icon
-            type="md-photos"
-            size="40"
-            @click="confirmCoverDialog"
-            color="#e87557"
-          />
-          <VolBox
-            icon="ios-chatbubbles"
-            :model.sync="uploadImgModel"
-            title="资讯封面图片上传和选择(最多三张)"
-            :height="200"
-            :width="450"
-            :padding="15"
-          >
-            <VolUpload
-              ref="coverUpload"
-              style="
+        <FormItem :label="newsType=='micro'?'':'封面选择：'" style="width: 40%">
+          <el-image v-for="img in seletedCovers" style="width: 60px; height: 50px; padding: 2px" :src="img.path"
+            fit="contain" :key="img.name"></el-image>
+          <Icon type="md-photos" size="40" @click="confirmCoverDialog" color="#e87557" />
+          <VolBox icon="ios-chatbubbles" :model.sync="uploadImgModel" title="资讯图片上传和选择" :height="200" :width="450"
+            :padding="15">
+            <VolUpload ref="coverUpload" style="
                 text-align: right;
                 border: 1px dotted #ff9800;
                 padding: 20px;
-              "
-              :url="'api/news/upload'"
-              :multiple="true"
-              :max-file="3"
-              :img="true"
-              :append="true"
-              :fileInfo="seletedCovers"
-            ></VolUpload>
+              " :url="'api/news/upload'" :autoUpload="false" :multiple="true" :max-file="newsType=='micro'?9:3"
+              :img="true" :append="true" :fileInfo="seletedCovers" :uploadAfter="uploadAfter"></VolUpload>
             <template slot="contentAppend">
-              <el-image
-                v-for="img in contentImgs"
-                style="
+              <el-image v-for="img in contentImgs" style="
                   width: 100px;
                   height: 100px;
                   padding: 10px;
                   cursor: pointer;
-                "
-                :src="img.path"
-                fit="contain"
-                :key="img.name"
-                @click="selectedContentImg(img)"
-              ></el-image>
+                " :src="img.path" fit="contain" :key="img.name" @click="selectedContentImg(img)"></el-image>
             </template>
             <template slot="footer">
-              <el-button type="success" @click="uploadImgModel = false"
-                >确定封面</el-button
-              >
+              <el-button type="success" @click="confirmUpload()">确定上传</el-button>
             </template>
           </VolBox>
         </FormItem>
         <FormItem label="是否推荐：" style="width: 20%">
-          <i-switch
-            size="large"
-            true-color="#13ce66"
-            false-color="#e87557"
-            v-model="formFileds.IsRecommend"
-          >
+          <i-switch size="large" true-color="#13ce66" false-color="#e87557" v-model="formFileds.IsRecommend">
             <span slot="open">推荐</span>
             <span slot="close">不推荐</span>
           </i-switch>
         </FormItem>
         <FormItem label="创建标签：" :label-width="90" style="width: 35%">
-          <el-select
-            style="width: 100%"
-            v-model="formFileds.Tags"
-            multiple
-            filterable
-            remote
-            reserve-keyword
-            allow-create
-            placeholder="请输入关键词"
-            :remote-method="remoteTags"
-            :loading="tagLoading"
-            @change="$forceUpdate()"
-          >
-            <el-option
-              v-for="item in tags"
-              :key="item.key"
-              :label="item.value"
-              :value="item.value"
-            ></el-option>
+          <el-select style="width: 100%" v-model="formFileds.Tags" multiple filterable remote reserve-keyword
+            allow-create placeholder="请输入关键词" :remote-method="remoteTags" :loading="tagLoading"
+            @change="$forceUpdate()">
+            <el-option v-for="item in tags" :key="item.key" :label="item.value" :value="item.value"></el-option>
           </el-select>
         </FormItem>
       </Form>
       <div style="text-align: right">
-        <Button
-          :type="formFileds.NewsId > 0 ? 'error' : 'success'"
-          v-if=""
-          style="margin-bottom: 20px"
-          @click="addNews()"
-        >
+        <Button :type="formFileds.NewsId > 0 ? 'error' : 'success'" style="margin-bottom: 20px" @click="addNews()">
           发 布
         </Button>
       </div>
@@ -141,7 +73,6 @@ import VolForm from "@/components/basic/VolForm.vue";
 import UploadImg from "@/components/basic/UploadImg.vue";
 import KindEditor from "@/components/kindeditor/KindEditor.vue";
 import thisFunc from "@/extension/news/newsCreate"
-import vueParam from './News.vue';
 export default {
   components: {
     VolBox,
@@ -152,22 +83,27 @@ export default {
     VideoUpload: () => import("@/extension/news/create/videoUpload.vue")
   },
   methods: {
-    addNews(isAdd) {
-      this.formFileds.Content = this.$refs.editor.getContent();
+    addNews (isAdd) {
+      if (this.$refs.editor)
+        this.formFileds.Content = this.$refs.editor.getContent();
+      if (this.newsType == "micro")
+        this.formFileds.Title = this.formFileds.Summary.substr(0, 50);
+      this.formFileds.Type = this.newsType;
       if (this.$refs.mainFieds.validate())
         thisFunc.Add(this);
     },
-    createTag(val) {
+    createTag (val) {
       this.tags.push({
         key: val,
         value: val
       });
     },
-    remoteTags(q) {
+    remoteTags (q) {
       thisFunc.GetTagsByKey(q, this);
     },
-    confirmCoverDialog() {
+    confirmCoverDialog () {
       this.uploadImgModel = true;
+      if (!this.$refs.editor) return;
       var html = this.$refs.editor.outContent;
       let imgReg = /<img.*?(?:>|\/>)/gi;
       let srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
@@ -179,20 +115,33 @@ export default {
           path: arr[i].match(srcReg)[1],
         });
     },
-    selectedContentImg(img) {
-      debugger
-      if (!this.seletedCovers.includes(img)) this.seletedCovers.push(img);
+    confirmUpload () {
+      this.$refs.coverUpload.upload();
     },
-    uploadVideo() {
+    uploadAfter (res, files) {
+      files.forEach((file) => {
+        this.seletedCovers.push({ name: file.name, path: file.path });
+      });
+      this.uploadImgModel = false;
+    },
+    selectedContentImg (img) {
+      this.seletedCovers = this.seletedCovers || [];
+      if (!this.seletedCovers.includes(img))
+        this.seletedCovers.push(img);
+    },
+    uploadVideo () {
       var file = this.$refs.videoFile.files[0];
       var data = new FormData();
       data.append(file.name, file);
     }
   },
-  created() {
+  created () {
+    if (!this.$store.state.system.userInfo.token)
+      this.$router.push("/login");
     this.formRules1.forEach((x) => {
       x.forEach((item) => {
-        if (item.field == "NewsTypes") {
+        if (item.field == "NewsTypes")
+        {
           this.http.get("api/NewsType/getTree").then((data) => {
             item.data = data;
           });
@@ -200,25 +149,33 @@ export default {
       });
     });
   },
-  mounted() {
+  mounted () {
     if (this.$route.query.newsId)
       this.http.get("/api/news/admin/" + this.$route.query.newsId)
         .then((result) => {
-          this.formFileds.NewsId = result.NewsId;
-          this.formFileds.Title = result.Title;
-          this.formFileds.Summary = result.Summary;
-          this.formFileds.IsRecommend = result.IsRecommend == 1 ? true : false;
-          this.formFileds.NewsTypes = result.NewsTypes;
-          this.formFileds.Tags = result.Tags;
-          if (result.VideoUrl)
-            this.formFileds.VideoUrl = result.VideoUrl;
-          else
-            this.$refs.editor.setContent(result.Content);
-          this.seletedCovers = result.seletedCovers;
+          Object.assign(this.formFileds, result);
+          this.seletedCovers = (result.SeletedCovers || []).map(m => { return { path: m } });
+          this.$refs.editor.setContent(result.Content);
+          this.newsType = result.Type;
+          console.log(this.formFileds);
         });
   },
-  watch: {},
-  data() {
+  watch: {
+    newsType (v1) {
+      console.log(v1);
+      if (v1 == "micro")
+        this.formRules1 = [[{
+          title: "",
+          width: "100%",
+          field: "Summary",
+          type: "textarea",
+          max: 200
+        }]];
+      else
+        this.formRules1 = this.$options.data().formRules1;
+    }
+  },
+  data () {
     return {
       tagLoading: false,
       uploadImgModel: false,
@@ -228,7 +185,7 @@ export default {
       newsType: "article",
       tags: [],
       formFileds: {
-        Title: "33",
+        Title: "",
         IsRecommend: true,
         Tags: [],
         NewsTypes: []
@@ -238,7 +195,7 @@ export default {
           title: "类型",
           required: true,
           field: "NewsTypes",
-          type: "selectList",
+          type: "checkbox",
           data: []
         }],
         [{
@@ -254,8 +211,8 @@ export default {
           field: "Summary",
           type: "textarea",
           max: 200
-        }],
-      ],
+        }]
+      ]
     };
   },
 };

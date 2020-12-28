@@ -5,9 +5,9 @@
  */
 
 export const meta = {
-  title: '诡瞥社区,一个恐怖灵异社区',
+  title: '诡瞥,一个恐怖灵异网站社区',
   keywords: '恐怖,灵异,暗黑系网站,恐怖灵异网站,恐怖电影',
-  description: '诡瞥社区,诡也,瞥之....',
+  description: '恐怖,灵异,暗黑系网站,恐怖灵异网站,恐怖电影,暗网视频,诡也,瞥之....',
   url: 'guipie.com',
   author: 'guipie',
   email: 'guipie.com@gmail.com'

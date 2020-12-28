@@ -22,20 +22,22 @@
         clearable
       ></el-cascader> -->
       <el-input v-model="searchKey" clearable placeholder="100万影视尽情搜索..">
-        <el-button slot="append" @click="pageChange(true)" icon="el-icon-search"></el-button>
+        <el-button slot="append" @click="pageChange(1)" icon="el-icon-search"></el-button>
       </el-input>
     </div>
     <el-row :gutter="20">
-      <el-col :span="12" v-for="x in currentList" :key="x.id">
+      <el-col :span="12" v-for="x in movies" :key="x.id">
         <nuxt-link target="_blank" :to="{ name: 'movie-id', params: { id: x.id } }">
           <GpMovie :movie="x"></GpMovie>
         </nuxt-link>
       </el-col>
     </el-row>
-    <div style="text-align: center; font-size: xx-large">
-      <i v-if="movieLoading" class="el-icon-loading"></i>
-      ....<el-button type="text" @click="pageChange(false)">more</el-button>....
+    <div v-if="movieLoading" style="text-align: center; font-size: xx-large">
+      <i class="el-icon-loading"></i>........
     </div>
+    <el-pagination :hide-on-single-page="total==0" @current-change="pageChange" v-if="total>0"
+      :current-page.sync="currentPage" background layout="prev, pager, next" :total="total">
+    </el-pagination>
   </div>
 </template>
 
@@ -43,70 +45,84 @@
 import { GetFileUrl } from "@/environment";
 import GpMovie from "~/components/content-movie.vue";
 export default {
-  fetch({ store }) {
+  fetch ({ store }) {
     return Promise.all([
-      store.dispatch("movie/fetchMovieList"),
       // store.dispatch('movie/fetchTypeList'),
       store.dispatch("movie/fetchBannerMovies"),
     ]);
   },
   computed: {
-    types() {
+    types () {
       return this.$store.state.movie.types.data;
     },
-    movies() {
+    movies () {
       let list = this.$store.state.movie.movies.data;
       return list;
     },
-    nextPage() {
-      return this.$store.state.movie.movies.nextPage;
+    total () {
+      return this.$store.state.movie.movies.total;
     },
-    bannerMovies() {
+    bannerMovies () {
       return this.$store.state.movie.bannerMovies.data;
     },
   },
   components: { GpMovie },
-  data() {
+  data () {
     return {
       movieLoading: false,
+      movieUrl: "/movie?t=" + new Date().getTime(),
       searchType: "",
       searchKey: "",
-      currentList: [],
-      total: -1,
+      currentPage: 1
     };
   },
-  mounted() {
+  mounted () {
+    this.query();
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
       setTimeout(() => this.$nuxt.$loading.finish(), 2000);
     });
-    this.currentList.push.apply(this.currentList, this.movies);
+    this.searchKey = this.$route.query.s;
+    this.searchType = this.$route.query.type;
   },
   methods: {
-    loginPress(e) {
-      if (e.keyCode == 13) {
-        this.$store.commit("movie/resetPage");
-        this.currentList = [];
-        this.pageChange(true);
-      }
-    },
-    pageChange(isFirst) {
-      if (this.nextPage == -1) return;
-      let wheres = [];
-      if (this.searchType) wheres.push({ name: "TypeId", value: this.searchType.toString(), displayType: "selectlist" });
-      if (this.searchKey) wheres.push({ name: "Name", value: this.searchKey, displayType: "like" });
+    query () {
       this.movieLoading = true;
-      this.$store.dispatch("movie/fetchMovieList", { page: isFirst ? 1 : this.nextPage, wheres: JSON.stringify(wheres) }).then((res) => {
+      let wheres = [];
+      let { type, s, page } = this.$route.query;
+      this.currentPage = parseInt(page || 1);
+      if (type) wheres.push({ name: "TypeId", value: type, displayType: "selectlist" });
+      if (s) wheres.push({ name: "Name", value: s, displayType: "like" });
+      this.$store.dispatch("movie/fetchMovieList", {
+        ...{
+          order: "desc",
+          page: this.currentPage,
+          rows: 10,
+          sort: "IsRecommend,ModifyDate"
+        }, ...{ wheres: JSON.stringify(wheres) }
+      }).then(res => {
         this.movieLoading = false;
-        this.total = res.total;
-        this.currentList.push.apply(this.currentList, res.data);
-      });
+      }).catch(err => {
+        this.movieLoading = false;
+      })
     },
-    getBannerImg(url) {
+    loginPress (e) {
+      if (e.keyCode == 13 && this.searchKey)
+        this.pageChange(1);
+    },
+    pageChange (current) {
+      let url = this.movieUrl + '&page=' + current;
+      if (this.searchKey)
+        url += "&s=" + this.searchKey;
+      if (this.searchType)
+        url += "&type=" + this.searchType;
+      window.location = url;
+    },
+    getBannerImg (url) {
       return GetFileUrl(url);
     },
   },
-  head() {
+  head () {
     return {
       title: this.title,
       meta: [
