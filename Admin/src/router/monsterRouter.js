@@ -16,6 +16,10 @@ let viewgird = [
     path: '/NewsType',
     name: 'NewsType',
     component: () => import('@/views/News/NewsType.vue')
+  }, {
+    path: '/Comment',
+    name: 'Comment',
+    component: () => import('@/views/Content/NewsComment.vue')
   },
   //news---end
   // movie--being 

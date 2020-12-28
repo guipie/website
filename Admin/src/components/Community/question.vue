@@ -2,7 +2,7 @@
   <div class="question-container">
     <div class="best-user">
       <div class="title">
-        <span>| 社区牛人排行榜</span>
+        <span>| 社区牛人活跃排行榜</span>
       </div>
       <div class="user-list">
         <div class="user" v-for="(item,index) in userList" :key="index">
@@ -14,9 +14,9 @@
               <span class="user-index">{{index+1}}</span>
               <span class="user-name">{{item.userName}}</span>
             </div>
-            <span class="user-text">回答数：{{item.replyQty}}</span>
+            <span class="user-text">文章数：{{item.replyQty}}</span>
             <br />
-            <span class="user-text">提问数：{{item.askQty}}</span>
+            <span class="user-text">评论数：{{item.askQty}}</span>
             <br />
           </div>
         </div>
@@ -36,7 +36,7 @@
     </div>
       </div>
     </div>-->
-    <div class="ask-split-title">最新提问</div>
+    <div class="ask-split-title">最新文章</div>
     <div
       @click="link(qitem)"
       class="question-group"

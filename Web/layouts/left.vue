@@ -14,15 +14,11 @@
         <i class="el-icon-video-camera-solid"></i>
         <span>视频</span>
       </el-menu-item>
-      <el-menu-item :index="'/image'">
-        <i class="el-icon-picture"></i>
-        <span>图库</span>
-      </el-menu-item>
       <el-menu-item :index="'/movie'">
         <i class="el-icon-film"></i>
-        <span>影视</span>
+        <span>放映厅</span>
       </el-menu-item>
-      <el-menu-item index="4">
+      <el-menu-item :index="'/messageboard'">
         <i class="el-icon-s-comment"></i>
         <span>诡迹</span>
       </el-menu-item>
@@ -33,21 +29,21 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       isCollapse: false,
     };
   },
   computed: {
-    isMobile() {
+    isMobile () {
       return this.$store.state.global.isMobile;
     },
   },
   methods: {
-    handleOpen(key, keyPath) {
+    handleOpen (key, keyPath) {
       console.log(key, keyPath);
     },
-    handleClose(key, keyPath) {
+    handleClose (key, keyPath) {
       console.log(key, keyPath);
     },
   },

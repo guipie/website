@@ -2,88 +2,46 @@
   <div class="upload-container">
     <div>
       <div class="input-btns" style="margin-bottom: 10px">
-        <input
-          ref="input"
-          type="file"
-          style="display: none"
-          @change="handleChange"
-          :multiple="multiple"
-        />
+        <input ref="input" type="file" style="display: none" @change="handleChange" :multiple="multiple" />
         <div v-if="img" class="upload-img">
           <!-- v-for="(file,index) in fileInfo.length>0?fileInfo: files" -->
-          <div
-            v-for="(file, index) in files.length > 0 ? files : fileInfo"
-            :key="index"
-            class="img-item"
-          >
+          <div v-for="(file, index) in files.length > 0 ? files : fileInfo" :key="index" class="img-item">
             <div class="operation">
               <div class="action">
-                <Icon
-                  type="md-eye"
-                  @click="previewImg(index)"
-                  class="view"
-                ></Icon>
-                <Icon
-                  type="md-close"
-                  @click="removeFile(index)"
-                  class="remove"
-                ></Icon>
+                <Icon type="md-eye" @click="previewImg(index)" class="view"></Icon>
+                <Icon type="md-close" @click="removeFile(index)" class="remove"></Icon>
               </div>
               <div class="mask"></div>
             </div>
             <img :src="getImgSrc(file)" :onerror="errorImg" />
           </div>
-          <div
-            v-show="
+          <div v-show="
               !autoUpload ||
               (autoUpload &&
                 files.length < maxFile &&
                 fileInfo.length < maxFile)
-            "
-            class="img-selector"
-            :class="getSelector()"
-          >
+            " class="img-selector" :class="getSelector()">
             <div class="selector" @click="handleClick">
               <Icon type="ios-camera"></Icon>
             </div>
-            <div
-              v-if="!autoUpload"
-              class="s-btn"
-              :class="{ readonly: changed }"
-              @click="upload"
-            >
+            <div v-if="!autoUpload" class="s-btn" :class="{ readonly: changed }" @click="upload">
               <div>{{ loadText }}</div>
             </div>
           </div>
         </div>
-        <Button v-else @click="handleClick" icon="ios-cloud-upload-outline"
-          >选择{{ img ? '图片' : '文件' }}</Button
-        >
+        <Button v-else @click="handleClick" icon="ios-cloud-upload-outline">选择{{ img ? '图片' : '文件' }}</Button>
 
-        <Button
-          v-if="!autoUpload && !img"
-          type="info"
-          :disabled="changed"
-          icon="md-arrow-round-up"
-          @click="upload"
-          :loading="loadingStatus"
-          >上传文件</Button
-        >
+        <Button v-if="!autoUpload && !img" type="info" :disabled="changed" icon="md-arrow-round-up" @click="upload"
+          :loading="loadingStatus">上传文件</Button>
       </div>
       <slot></slot>
       <div v-if="desc">
-        <Alert show-icon
-          >{{ getText() }}文件大小不超过{{ maxSize || 3 }}M</Alert
-        >
+        <Alert show-icon>{{ getText() }}文件大小不超过{{ maxSize || 3 }}M</Alert>
       </div>
       <slot name="content"></slot>
       <div v-if="!img">
         <ul class="upload-list" v-show="fileList">
-          <li
-            class="list-file"
-            v-for="(file, index) in files.length > 0 ? files : fileInfo"
-            :key="index"
-          >
+          <li class="list-file" v-for="(file, index) in files.length > 0 ? files : fileInfo" :key="index">
             <a>
               <span @click="fileOnClick(index, file)">
                 <Icon :type="format(file)"></Icon>
@@ -223,7 +181,7 @@ export default {
       default: false,
     },
   },
-  data() {
+  data () {
     return {
       errorImg: 'this.src="' + require("@/assets/imgs/error-img.png") + '"',
       changed: false, //手动上传成功后禁止重复上传，必须重新选择
@@ -234,14 +192,15 @@ export default {
       loadText: "上传文件",
     };
   },
-  created() {
+  created () {
     //默认有图片的禁止上传操作
-    if (this.fileInfo) {
+    if (this.fileInfo)
+    {
       this.changed = true;
     }
   },
   methods: {
-    previewImg(index) {
+    previewImg (index) {
       //查看大图预览模式待完
       this.base.previewImg(
         this.getImgSrc(
@@ -250,33 +209,40 @@ export default {
       );
       //  window.open(this.getImgSrc((this.files.length>0?this.files:this.fileInfo)[index]));
     },
-    getSelector() {
-      if (this.autoUpload) {
+    getSelector () {
+      if (this.autoUpload)
+      {
         return "auto-selector";
       }
       return "submit-selector";
     },
-    getImgSrc(file) {
-      if (file.hasOwnProperty("path")) {
-        if (this.base.isUrl(file.path)) {
+    getImgSrc (file) {
+      if (file.hasOwnProperty("path"))
+      {
+        if (this.base.isUrl(file.path))
+        {
           return file.path;
         }
-        if (file.path.substr(0, 1) == "/") {
+        if (file.path.substr(0, 1) == "/")
+        {
           file.path = file.path.substr(1);
         }
         return this.http.ipAddress + file.path;
       }
       return window.URL.createObjectURL(file);
     },
-    fileOnClick(index, file) {
-      if (!this.fileClick(index, file, this.files)) {
+    fileOnClick (index, file) {
+      if (!this.fileClick(index, file, this.files))
+      {
         return;
       }
       //点击不下载
-      if (!this.downLoad) {
+      if (!this.downLoad)
+      {
         return;
       }
-      if (!file.path) {
+      if (!file.path)
+      {
         this.$Message.error("请先上传文件");
         return;
       }
@@ -289,63 +255,74 @@ export default {
         this.http.ipAddress
       );
     },
-    getText() {
-      if (this.img) {
+    getText () {
+      if (this.img)
+      {
         return "只能上传图片,";
-      } else if (this.excel) {
+      } else if (this.excel)
+      {
         return "只能上传excel文件,";
       }
     },
-    handleClick() {
+    handleClick () {
       this.$refs.input.click();
     },
-    handleChange(e) {
+    handleChange (e) {
       this.clearFiles();
       var result = this.checkFile(e.target.files);
-      if (!result) {
+      if (!result)
+      {
         return;
       }
       this.changed = false;
       //如果传入了FileInfo需要自行处理移除FileInfo
-      if (!this.onChange(e.target.files)) {
+      if (!this.onChange(e.target.files))
+      {
         return;
       }
       this.files.push(...e.target.files);
       this.$refs.input.value = null;
 
-      if (this.autoUpload && result) {
+      if (this.autoUpload && result)
+      {
         this.upload();
       }
     },
-    removeFile(index) {
+    removeFile (index) {
       //如果传入了FileInfo需要自行处理移除FileInfo
       //t移除文件
       let removeFile =
         this.fileInfo.length > 0 ? this.fileInfo[index] : this.files[index];
-      if (this.fileInfo.length) {
+      if (this.fileInfo.length)
+      {
         this.fileInfo.splice(index, 1);
-      } else {
+      } else
+      {
         this.files.splice(index, 1);
       }
-      if (!this.removeBefore(index, removeFile, this.fileInfo)) {
+      if (!this.removeBefore(index, removeFile, this.fileInfo))
+      {
         return;
       }
     },
-    clearFiles() {
+    clearFiles () {
       this.files.splice(0);
     },
-    getFiles() {
+    getFiles () {
       return this.files;
     },
-    upload() {
+    upload () {
       if (!this.checkFile()) return false;
-      if (!this.url) {
+      if (!this.url)
+      {
         return this.$Message.error({ duration: 5, content: "没有配置好Url" });
       }
-      if (!this.files || this.files.length == 0) {
+      if (!this.files || this.files.length == 0)
+      {
         return this.$Message.error({ duration: 5, content: "请选择文件" });
       }
-      if (!this.uploadBefore(this.files)) {
+      if (!this.uploadBefore(this.files))
+      {
         return;
       }
       var forms = new FormData();
@@ -362,25 +339,35 @@ export default {
             // this.$refs.uploadFile.clearFiles();
             this.loadingStatus = false;
             this.loadText = "上传文件";
-            if (!this.uploadAfter(x, this.files)) {
+            /* 多文件上传后台显示pload/News/202012/1.jpg;Upload/News/202012/2.jpg;Upload/News/202012/3.jpg; */
+            const urls = x.data.split(";");
+            if (urls.length > 0)
+              urls.forEach((url, index) => {
+                if (url)
+                  this.files[index].path = (url.startsWith("http") ? "" : axios.defaults.baseURL) + url;
+              });
+            if (!this.uploadAfter(x, this.files))
+            {
               this.changed = false;
               return;
-            } else {
+            } else
+            {
               this.changed = true;
             }
             this.$Message.success({ duration: 5, content: x.message });
             this.changed = x.status;
-            if (!x.status) {
+            if (!x.status)
+            {
               // this.files = null;
               return;
             }
-            if (!this.append) {
+            if (!this.append)
+            {
               this.fileInfo.splice(0);
             }
+            console.log(this.files);
             this.files.forEach((file) => {
-              if (!x.data.startsWith("http"))
-                x.data = axios.defaults.baseURL + x.data;
-              this.fileInfo.push({ name: file.name, path: x.data });
+              this.fileInfo.push({ name: file.name, path: file.path });
             });
             // if (this.clear) {
             this.clearFiles();
@@ -392,11 +379,13 @@ export default {
           }
         );
     },
-    format(file, checkFileType) {
+    format (file, checkFileType) {
       const format = file.name.split(".").pop().toLocaleLowerCase() || "";
       let fileIcon = "ios-document-outline";
-      if (this.fileTypes.length > 0 && checkFileType != undefined) {
-        if (this.fileTypes.indexOf(format) != -1) {
+      if (this.fileTypes.length > 0 && checkFileType != undefined)
+      {
+        if (this.fileTypes.indexOf(format) != -1)
+        {
           return true;
         }
         return false;
@@ -406,10 +395,13 @@ export default {
         !(checkFileType instanceof Array) &&
         checkFileType != "img" &&
         checkFileType != "excel"
-      ) {
-        if (checkFileType.indexOf(format) > -1) {
+      )
+      {
+        if (checkFileType.indexOf(format) > -1)
+        {
           return true;
-        } else {
+        } else
+        {
           return false;
         }
       }
@@ -417,13 +409,17 @@ export default {
       if (
         checkFileType == "img" ||
         ["gif", "jpg", "jpeg", "png", "bmp", "webp"].indexOf(format) > -1
-      ) {
-        if (checkFileType == "img") {
+      )
+      {
+        if (checkFileType == "img")
+        {
           if (
             ["gif", "jpg", "jpeg", "png", "bmp", "webp"].indexOf(format) > -1
-          ) {
+          )
+          {
             return true;
-          } else {
+          } else
+          {
             return false;
           }
         }
@@ -433,43 +429,53 @@ export default {
         ["mp4", "m3u8", "rmvb", "avi", "swf", "3gp", "mkv", "flv"].indexOf(
           format
         ) > -1
-      ) {
+      )
+      {
         fileIcon = "ios-film";
       }
-      if (["mp3", "wav", "wma", "ogg", "aac", "flac"].indexOf(format) > -1) {
+      if (["mp3", "wav", "wma", "ogg", "aac", "flac"].indexOf(format) > -1)
+      {
         fileIcon = "ios-musical-notes";
       }
-      if (["doc", "txt", "docx", "pages", "epub", "pdf"].indexOf(format) > -1) {
+      if (["doc", "txt", "docx", "pages", "epub", "pdf"].indexOf(format) > -1)
+      {
         fileIcon = "md-document";
       }
       if (
         checkFileType == "excel" ||
         ["numbers", "csv", "xls", "xlsx"].indexOf(format) > -1
-      ) {
-        if (checkFileType == "excel") {
-          if (["numbers", "csv", "xls", "xlsx"].indexOf(format) > -1) {
+      )
+      {
+        if (checkFileType == "excel")
+        {
+          if (["numbers", "csv", "xls", "xlsx"].indexOf(format) > -1)
+          {
             return true;
-          } else {
+          } else
+          {
             return false;
           }
         }
         fileIcon = "ios-podium";
       }
-      if (["keynote", "ppt", "pptx"].indexOf(format) > -1) {
+      if (["keynote", "ppt", "pptx"].indexOf(format) > -1)
+      {
         fileIcon = "ios-videocam";
       }
 
       return fileIcon;
     },
-    beforeUpload() { },
-    checkFile(files) {
-      if (!files) {
+    beforeUpload () { },
+    checkFile (files) {
+      if (!files)
+      {
         files = this.files;
       }
       if (
         this.multiple &&
         files.length + this.fileInfo.length > (this.maxFile || 5)
-      ) {
+      )
+      {
         this.$Message.error({
           duration: 5,
           content:
@@ -482,20 +488,24 @@ export default {
         return false;
       }
       let names = [];
-      for (let index = 0; index < files.length; index++) {
+      for (let index = 0; index < files.length; index++)
+      {
         const file = files[index];
-        if (names.indexOf(file.name) != -1) {
+        if (names.indexOf(file.name) != -1)
+        {
           file.name = "(" + index + ")" + file.name;
         }
         names.push(file.name);
-        if (this.img && !this.format(file, "img")) {
+        if (this.img && !this.format(file, "img"))
+        {
           this.$Message.error({
             duration: 5,
             content: "选择的文件【" + file.name + "】只能是图片格式",
           });
           return false;
         }
-        if (this.excel && !this.format(file, "excel")) {
+        if (this.excel && !this.format(file, "excel"))
+        {
           this.$Message.error({
             duration: 5,
             content: "选择的文件【" + file.name + "】只能是excel文件",
@@ -506,7 +516,8 @@ export default {
           this.fileTypes &&
           this.fileTypes.length > 0 &&
           !this.format(file, this.fileTypes)
-        ) {
+        )
+        {
           this.$Message.error({
             duration: 5,
             content:
@@ -518,7 +529,8 @@ export default {
           });
           return false;
         }
-        if (file.size > (this.maxSize || 3) * 1024 * 1024) {
+        if (file.size > (this.maxSize || 3) * 1024 * 1024)
+        {
           this.$Message.error({
             duration: 5,
             content:

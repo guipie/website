@@ -13,7 +13,7 @@
                 </div>
               </Tooltip>
             </div>
-            <div class="total">￥{{ (item.total + "").replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, "$1,") }}</div>
+            <div class="total">{{ (item.total + "").replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, "$1,") }}</div>
             <div class="rate">
               <span>
                 <span>环比{{ item.down }}%</span>
@@ -36,32 +36,23 @@
           </div>
           <div class="home-app">
             <div class="list">
-              <Cow></Cow>
-            </div>
-            <div class="list">
-              <Community></Community>
-            </div>
-
-            <div class="list">
               <Question></Question>
             </div>
-          </div>
-        </div>
-        <div class="charts">
-          <div id="charts" style="height: 360px; padding-bottom: 0" class="left"></div>
-          <div class="right">
-            <div class="title">活跃用户榜</div>
-
-            <div class="user-item">
-              <div v-for="(item, index) in cell" :key="index" class="cell">
-                <div class="primary">
-                  <span :class="{ top3: index < 3, badge: index >= 3 }" class="badge-count">{{ index + 1 }}</span>
-                  <Avatar :src="item.img" />
-                  <span class="name">{{ item.name }}</span>
-                  <span class="desc">{{ item.desc }}</span>
+            <div class="list">
+              <!-- <Cow></Cow> -->
+              <div id="charts" style="height: 360px; padding-bottom: 0"></div>
+            </div>
+            <div class="list">
+              <!-- <Community></Community> -->
+              <div class="title">最新评论</div>
+              <div class="user-item">
+                <div v-for="(item, index) in cell" :key="index" class="cell">
+                  <div class="primary">
+                    <Avatar :src="item.img" />
+                    <span class="name">{{ item.name }}</span>
+                    <span class="desc">{{ item.desc }}</span>
+                  </div>
                 </div>
-
-                <div>{{ item.number }}</div>
               </div>
             </div>
           </div>
@@ -78,7 +69,7 @@ var echarts = require("echarts");
 
 export default {
   components: { Community: Community, Cow: Cow, Question: Question },
-  data() {
+  data () {
     return {
       n: 90,
       cell: [
@@ -121,35 +112,35 @@ export default {
       ],
       topColor: [
         {
-          name: "订单金额",
+          name: "今日注册用户",
           desc: "#205",
           background: "rgb(25, 190, 107)",
-          total: 670000,
+          total: 60,
           down: -10,
           up: 60,
           icon: "ios-home",
         },
         {
-          name: "支付金额",
+          name: "总用户",
           desc: "#412",
-          total: 540000,
+          total: 540,
           down: -15,
           up: 45,
           background: "rgb(45, 183, 245)",
           icon: "ios-help-buoy",
         },
         {
-          name: "取消金额",
+          name: "待审核",
           desc: "#200",
-          total: 872500,
+          total: 870,
           down: -18,
           up: 70,
           background: "rgb(255, 153, 0)",
           icon: "md-ionic",
         },
         {
-          name: "退货金额",
-          total: 253500,
+          name: "总文章",
+          total: 20,
           down: -25,
           up: 45,
           background: "rgb(237, 64, 20)",
@@ -159,7 +150,7 @@ export default {
       value1: "1",
     };
   },
-  mounted() {
+  mounted () {
     var dataChart = echarts.init(document.getElementById("charts"));
     // 数据统计
     dataChart.setOption({
@@ -184,7 +175,7 @@ export default {
     var $charts_line = echarts.init(document.getElementById("charts-line"));
     $charts_line.setOption({
       title: {
-        text: "日销售订单统计",
+        text: "内容数据统计",
       },
       tooltip: {
         trigger: "axis",
@@ -199,7 +190,7 @@ export default {
       color: ["#ffab6f", "#09b916", "#83cddc"], //图例颜色
       legend: {
         icon: "roundRect",
-        data: ["销售订单", "退货订单", "折扣订单"],
+        data: ["日活用户", "新增文章", "新增影视"],
       },
       toolbox: {
         feature: {},
@@ -224,7 +215,7 @@ export default {
       ],
       series: [
         {
-          name: "销售订单",
+          name: "日活用户",
           type: "line",
           smooth: true,
           lineStyle: {
@@ -246,7 +237,7 @@ export default {
           data: [5, 22, 150, 54, 1, 230, 4, 1],
         },
         {
-          name: "退货订单",
+          name: "新增文章",
           type: "line",
 
           smooth: true,
@@ -269,7 +260,7 @@ export default {
           data: [10, 150, 1, 250, 20, 100, 10, 150],
         },
         {
-          name: "折扣订单",
+          name: "新增影视",
           type: "line",
 
           lineStyle: {
@@ -357,7 +348,9 @@ export default {
     color: #282727;
     font-size: 30px;
     padding-bottom: 12px;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC,
+      Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial,
+      sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   }
   .item-name {
     position: relative;
