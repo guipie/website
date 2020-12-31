@@ -1,10 +1,10 @@
 <template>
   <div :gutter="20" class="head-row">
-    <el-col :span="7">
+    <el-col :span="6">
       <a href="/"> <h2 class="col1">诡瞥社区</h2> </a>
     </el-col>
-    <el-col :span="10"><div class="col2"></div></el-col>
-    <el-col :span="7" style="float: right">
+    <el-col :span="12"><div class="col2"></div></el-col>
+    <el-col :span="6" style="float: right">
       <div class="col3" style="margin-top: 20px">
         <el-dropdown v-if="userInfo.userName" @command="handleCommand">
           <span v-if="userInfo.img">

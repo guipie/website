@@ -78,8 +78,8 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
-    // 'element-ui/lib/theme-chalk/index.css',
-    '@/assets/theme/index.css',
+    'element-ui/lib/theme-chalk/index.css',
+    // '@/assets/theme/index.css',
     '@/assets/styles/base.css'
   ],
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)

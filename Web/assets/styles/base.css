@@ -10,7 +10,7 @@
 
 body {
   margin: 0%;
-  background: url("/background.jpg") no-repeat;
+  /* background: url('/background.jpg')top center no-repeat; */
   background-size: cover;
 }
 
