@@ -4,20 +4,18 @@
       <gpHeader />
     </el-header>
     <el-row :gutter="20">
-      <el-col :span="7" v-if="!isMobile">
+      <el-col :span="6" v-if="!isMobile">
         <div class="col1">
           <GpLeft></GpLeft>
         </div>
       </el-col>
-      <el-col :span="isMobile ? 24 : 10">
+      <el-col :span="isMobile ? 24 : 12">
         <div class="col2">
           <nuxt />
         </div>
       </el-col>
       <el-col :span="7" v-if="!isMobile">
-        <div class="col3">
-          <GpRight></GpRight>
-        </div>
+        <div class="col3"></div>
       </el-col>
     </el-row>
   </el-container>

@@ -1,25 +1,33 @@
 <template>
   <div>
     <!-- <i class="el-icon-s-unfold" v-show="isMobile"></i> -->
-    <el-menu router @open="handleOpen" @close="handleClose" :collapse="isMobile">
+    <el-menu :default-active="activeMenu" router @open="handleOpen" @close="handleClose" :collapse="isMobile">
       <el-menu-item v-show="isMobile">
         <i class="el-icon-s-unfold" style="color: red"></i>
         <span></span>
       </el-menu-item>
+      <el-menu-item index="/follow">
+        <span>关注</span>
+      </el-menu-item>
       <el-menu-item index="/">
-        <i class="el-icon-s-home"></i>
-        <span>社区</span>
+        <span>推荐</span>
+      </el-menu-item>
+      <el-menu-item index="/all">
+        <span>全部</span>
+      </el-menu-item>
+      <el-menu-item index="/article">
+        <span>文章</span>
+      </el-menu-item>
+      <el-menu-item :index="'/voice'">
+        <span>音频</span>
       </el-menu-item>
       <el-menu-item :index="'/video'">
-        <i class="el-icon-video-camera-solid"></i>
         <span>视频</span>
       </el-menu-item>
       <el-menu-item :index="'/movie'">
-        <i class="el-icon-film"></i>
         <span>放映厅</span>
       </el-menu-item>
       <el-menu-item :index="'/messageboard'">
-        <i class="el-icon-s-comment"></i>
         <span>诡迹</span>
       </el-menu-item>
     </el-menu>
@@ -32,6 +40,7 @@ export default {
   data () {
     return {
       isCollapse: false,
+      activeMenu: "/"
     };
   },
   computed: {

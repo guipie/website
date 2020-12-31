@@ -10,7 +10,7 @@ if (process.env.NODE_ENV == 'development') {
 } else if (process.env.NODE_ENV == 'debug') {
   axios.defaults.baseURL = 'http://127.0.0.1:8990/';
 } else if (process.env.NODE_ENV == 'production') {
-  axios.defaults.baseURL = 'http://124.156.149.109:90/';
+  axios.defaults.baseURL = 'http://guipie.com:90/';
 }
 let ipAddress = axios.defaults.baseURL;
 axios.interceptors.request.use((config) => {
