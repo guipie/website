@@ -6,7 +6,7 @@
     <el-row :gutter="20">
       <el-col :span="7" v-if="!isMobile">
         <div class="col1">
-          <gpLeft></gpLeft>
+          <GpLeft></GpLeft>
         </div>
       </el-col>
       <el-col :span="isMobile ? 24 : 10">
@@ -15,7 +15,9 @@
         </div>
       </el-col>
       <el-col :span="7" v-if="!isMobile">
-        <div class="col3"></div>
+        <div class="col3">
+          <GpRight></GpRight>
+        </div>
       </el-col>
     </el-row>
   </el-container>
@@ -24,13 +26,14 @@
 <script>
 import GpHeader from "@/layouts/header.vue";
 import GpLeft from "@/layouts/left.vue";
+import GpRight from "@/layouts/right.vue";
 export default {
   components: {
     GpHeader,
-    GpLeft,
+    GpLeft, GpRight
   },
   computed: {
-    isMobile() {
+    isMobile () {
       return this.$store.state.global.isMobile;
     },
   },

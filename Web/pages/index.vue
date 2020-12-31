@@ -1,13 +1,11 @@
 <template>
   <div class="container">
-    <el-carousel class="carousel" indicator-position="outside">
-      <el-carousel-item v-for="item in bannerNews" :key="item.mappingId">
-        <nuxt-link :to="'/article/' + item.mappingId">
-          <h3 class="carousel-h3">{{ item.description || item.title }}</h3>
-          <el-image :src="getBannerImg(item.bannerImg)"></el-image>
-        </nuxt-link>
-      </el-carousel-item>
-    </el-carousel>
+    <div>
+      <div>
+        <el-input type="textarea" placeholder="请输入内容" v-model="textarea" maxlength="30" show-word-limit>
+        </el-input>
+      </div>
+    </div>
     <div v-for="i in news" :key="i.newsId" class="container-item">
       <GpContent :news="i"></GpContent>
     </div>
@@ -18,26 +16,23 @@ import { GetFileUrl } from "@/environment";
 import GpContent from "~/components/content.vue";
 export default {
   components: { GpContent },
-  fetch({ store }) {
-    return Promise.all([store.dispatch("news/fetchNewsList"), store.dispatch("news/fetchBannerNews")]);
+  fetch ({ store }) {
+    return Promise.all([store.dispatch("news/fetchNewsList")]);
   },
-  mounted() {},
+  mounted () { },
   computed: {
-    types() {
+    types () {
       return this.$store.state.news.news.data;
     },
-    news() {
+    news () {
       return this.$store.state.news.news.data;
     },
-    bannerNews() {
-      return this.$store.state.news.bannerNews.data;
-    },
-    total() {
+    total () {
       return this.$store.state.news.news.total;
     },
   },
   methods: {
-    getBannerImg(url) {
+    getBannerImg (url) {
       return GetFileUrl(url);
     },
   },

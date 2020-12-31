@@ -16,6 +16,7 @@
     "element-ui": "^2.13.2",
     "hls.js": "^0.14.16",
     "nuxt": "^2.14.6",
+    "qiniu": "^7.3.2",
     "ua-parser-js": "^0.7.22",
     "vue-infinite-scroll": "^2.0.2",
     "xgplayer": "^2.13.0",
