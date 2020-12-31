@@ -1,4 +1,4 @@
-import appConfig from './config/app.config.js'
+import appConfig from './static/js/app.config.js'
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
