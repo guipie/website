@@ -16,12 +16,14 @@
     "element-ui": "^2.13.2",
     "hls.js": "^0.14.16",
     "nuxt": "^2.14.6",
-    "qiniu": "^7.3.2",
+    "qiniu-js": "^3.1.2",
     "ua-parser-js": "^0.7.22",
     "vue-infinite-scroll": "^2.0.2",
+    "wangeditor": "^4.6.1",
     "xgplayer": "^2.13.0",
     "xgplayer-hls.js": "^2.2.5",
-    "xgplayer-mp4": "^1.2.0"
+    "xgplayer-mp4": "^1.2.0",
+    "xgplayer-music": "^2.2.0"
   },
   "devDependencies": {
     "@vue/test-utils": "^1.1.0",

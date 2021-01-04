@@ -3,7 +3,7 @@
     <el-header>
       <gpHeader />
     </el-header>
-    <el-row :gutter="20">
+    <el-row>
       <el-col :span="6" v-if="!isMobile">
         <div class="col1">
           <GpLeft></GpLeft>
@@ -14,8 +14,10 @@
           <nuxt />
         </div>
       </el-col>
-      <el-col :span="7" v-if="!isMobile">
-        <div class="col3"></div>
+      <el-col :span="6" v-if="!isMobile">
+        <div class="col3">
+          <GpRight></GpRight>
+        </div>
       </el-col>
     </el-row>
   </el-container>
@@ -23,8 +25,8 @@
 
 <script>
 import GpHeader from "@/layouts/header.vue";
-import GpLeft from "@/layouts/left.vue";
-import GpRight from "@/layouts/right.vue";
+import GpLeft from "@/layouts/default-left.vue";
+import GpRight from "@/layouts/default-right.vue";
 export default {
   components: {
     GpHeader,
@@ -35,19 +37,13 @@ export default {
       return this.$store.state.global.isMobile;
     },
   },
+  methods: {
+  },
 };
 </script>
 
 <style>
 .gp-container {
   height: 100%;
-}
-.el-header {
-  padding: 0%;
-  background-color: #000000;
-}
-.col1 {
-  float: right;
-  color: #ffffff;
 }
 </style>

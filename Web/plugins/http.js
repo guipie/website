@@ -53,11 +53,18 @@ service.interceptors.response.use(
   error => {
     let res = error.response;
     if (res && res.status == 401 && process.browser)
+    {
       $nuxt.$notify({
         title: '授权警告',
-        message: '您没有访问授权，请登录试试..',
+        message: '您没有访问授权，请登录或授权后再试..',
         type: 'warning'
       });
+      if (process.browser)
+      {
+        $nuxt.$store.commit("user/setUser", {});
+        $nuxt.$loginDialog();
+      }
+    }
     return Promise.reject(error)
   }
 )

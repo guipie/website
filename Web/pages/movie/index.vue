@@ -43,8 +43,11 @@
 
 <script>
 import { GetFileUrl } from "@/environment";
-import GpMovie from "~/components/content-movie.vue";
+import GpMovie from "~/components/moviePlayer/movie_item.vue";
 export default {
+  layout: function (context) {
+    return 'default-movie'
+  },
   fetch ({ store }) {
     return Promise.all([
       // store.dispatch('movie/fetchTypeList'),

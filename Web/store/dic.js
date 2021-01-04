@@ -19,7 +19,7 @@ const actions = {
   fetchCommentTypes ({
     commit, state
   }, params = {}) {
-    return this.$http.get(api.dicApi, { ...params, key: "commentType" })
+    this.$http.get(api.dicApi, { ...params, key: "commentType" })
       .then(data => {
         commit('setCommentType', data);
       }).catch(error => console.log(error))

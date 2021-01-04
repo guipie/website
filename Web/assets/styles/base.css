@@ -1,3 +1,22 @@
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  --webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #000;
+  --webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: #000;
+}
+
 .page-enter-active,
 .page-leave-active {
   transition: opacity 1.5s;
@@ -19,8 +38,25 @@ body {
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  color: #ffffff;
+  /* color: #ffffff; */
   height: 100%;
+}
+
+.publish .el-row {
+  margin-top: 5px;
+}
+
+.item-append button {
+  cursor: pointer;
+  color: #333030;
+}
+
+.item-append i {
+  font-size: 18px;
+}
+
+.item-append .active {
+  color: #409EFF;
 }
 
 .carousel .is-active button {

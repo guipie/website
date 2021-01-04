@@ -1,114 +1,86 @@
-import qiniu from "qiniu"
 const config = {
-  AccessKey: "_fpzQRvuLFPcVZ7Zj_Y6k5rdXaXLdNzQOKxJYA4R",
-  SecretKey: "hLaEdKVf4aLxkJ1A-4rEw5DqEliJbhbGRBkjWd5e",
-  Zone: ""
-}
-/** 封装本地upload方法
-@param url 上传路径
-@param json 包含file对象
-@returns {Promise}
-**/
-export function upload (url, json) {
-  return new Promise((resolve, reject) => {
-    let size = parseInt(Number(json.file.size) / Number(process.env.MAX_FILESIZE) + 1);
-    let y = 0;
-    let fun = function () {
-      let formData = new FormData();
-      let file = json.file.slice(yprocess.env.MAX_FILESIZE, (y + 1) * process.env.MAX_FILESIZE);
-      formData.append('chunk', y);
-      formData.append('file_name', json.file.name);
-      formData.append('count', size);
-      formData.append('type', json.type);
-      formData.append('file', file);
-      axios.post(url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }, timeout: 10000000,
-        onUploadProgress: progressEvent => {
-          //progressEvent.loaded 为上传进度
+  useCdnDomain: false,// 表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
+  disableStatisticsReport: false,// 是否禁用日志报告，为布尔值，默认为 false。
+  // uphost: "http://qm7207fgh.hn-bkt.clouddn.com", //上传 host，如果设定该参数则优先使用该参数作为上传地址，默认为 null。
+  // region: "up-z2.qiniup.com", //选择上传域名区域；当为 null 或 undefined 时，自动分析上传域名区域。
+  retryCount: 5, //上传自动重试次数（整体重试次数，而不是某个分片的重试次数）；默认 3 次（即上传失败后最多重试两次）。
+  concurrentRequestLimit: 5, //分片上传的并发请求量，number，默认为3；因为浏览器本身也会限制最大并发量，所以最大并发量与浏览器有关。
+  checkByMD5: true, //是否开启 MD5 校验，为布尔值；在断点续传时，开启 MD5 校验会将已上传的分片与当前分片进行 MD5 值比对，若不一致，则重传该分片，避免使用错误的分片。读取分片内容并计算 MD5 需要花费一定的时间，因此会稍微增加断点续传时的耗时，默认为 false，不开启。
+  //forceDirect: 是否上传全部采用直传方式，为布尔值；为 true 时则上传方式全部为直传 form 方式，禁用断点续传，默认 false。
+  chunkSize: 5 //且最大不能超过 1024，默认值 4。因为 chunk 数最大 10000，所以如果文件以你所设的 chunkSize 进行分片并且 chunk 数超过 10000，我们会把你所设的 chunkSize 扩大二倍，如果仍不符合则继续扩大，直到符合条件。
+};
+import * as qiniu from 'qiniu-js';
+import {
+  DateFormat
+} from '~/plugins/common'
+export const qnUpload = async (file, watch, success, fail, token) => {
+  let domain;
+  try
+  {
+    if (!token)
+    {
+      await $nuxt.$http.post("AppApi/News/QiNiu/Token")
+        .then(data => {
+          token = data.token;
+          domain = data.domain;
+        }).catch(error => console.log(error))
+    }
+    if (token && domain)
+    {
+      const putExtra = {
+        fname: file.name,
+        mimeType: file.type,
+        // customVars: { 'x:test': 'qiniu', ... },
+        // metadata: { 'x-qn-meta': 'qiniu', ... },
+      };
+      const observable = qiniu.upload(file, DateFormat("yyyyMMddhhmmss") + '/' + file.name, token, putExtra, config);
+      // 上传开始
+      const subscription = observable.subscribe(
+        function next (total) {
+          /**
+          total.loaded: number，已上传大小，单位为字节。
+          total.total: number，本次上传的总量控制信息，单位为字节，注意这里的 total 跟文件大小并不一致。
+          total.percent: number，当前上传进度，范围：0～100。
+           */
+          console.log(total);
+          if (watch)
+            watch(total);
         },
-      }).then(response => {
-        if (response.data.code === 200)
-        {
-          if (y + 1 < size)
-          {
-            y++;
-            fun()
-          } else
-          {
-            y = 0;
-            resolve(response.data.data);
-          }
-        } else
-        {
-          Vue.prototype.$message.error(response.data.msg)
-        }
-      })
-        .catch(err => {
-          reject(err);
-          let message = '请求失败！请检查网络';
-          if (err.response) message = err.response.data.message;
-          Vue.prototype.$$msgbox({
-            title: '错误！',
-            message: message,
-            type: 'error',
-          })
-        })
-    };
-    fun()
+        function error (err) {
+          /**
+          err.isRequestError: 用于区分是否 xhr 请求错误；当 xhr 请求出现错误并且后端通过 HTTP 状态码返回了错误信息时，该参数为 true；否则为 undefined 。
+          err.reqId: string，xhr请求错误的 X-Reqid。
+          err.code: number，请求错误状态码，只有在 err.isRequestError 为 true 的时候才有效，可查阅码值对应说明。
+          err.message: string，错误信息，包含错误码，当后端返回提示信息时也会有相应的错误信息。 
+          */
+          console.log(err);
+          if (fail)
+            fail(err);
+          else
+            $nuxt.$message.error("上传出错了");
+        },
+        function complete (res) {
+          console.log(res);
+          if (success)
+            success(domain + res.key);
+          else
+            $nuxt.$message.success("上传成功");
+        });
+    }
+    else
+    {
+      if (fail)
+        fail("未获取到上传token和域名");
+      else
+        console.log("未获取到上传token和域名.");
+    }
   }
-  );
+  catch (error)
+  {
+    if (fail)
+      fail("代码错误.");
+    else
+      $nuxt.$message.error("代码错误");
+  }
+  // subscription.unsubscribe(); // 上传取消
 }
-/**封装七牛upload方法
-@param json json中包含fail
-@returns {Promise}
-*/
-export function uploadQiniu (json) {
-  var mac = new qiniu.auth.digest.Mac(config.AccessKey, config.SecretKey);
-  //自定义凭证有效期（示例2小时，expires单位为秒，为上传凭证的有效时间）
-  var options = {
-    scope: bucket,
-    expires: 7200
-  };
-  var putPolicy = new qiniu.rs.PutPolicy(options);
-  var uploadToken = putPolicy.uploadToken(mac);
-  console.log(uploadToken);
-  return;
-  return new Promise((resolve, reject) => {
-    axios.get('获取七牛权限的后台接口地址，主要获取七牛token', {
-      params: {
-        file_name: json.file.name
-      }
-    }).then(resData => {
-      let putExtra = {
-        fname: json.file.name,
-        mimeType: json.mimeType || null
-      };
-      let congif = {};
-      let observable = qiniu.upload(json.file, resData.data.data.new_name, resData.data.data.token, putExtra, congif);
-      let observer = {
-        next (res) {
-          let progress = Number(res.total.percent.toFixed(0));
-          // 此处得到上传进度百分比 可加后续操作
-        },
-        error (err) {
-          reject(err);
-          let message = '请求失败！请检查网络';
-          if (err.response) message = err.response.data.message;
-          Vue.prototype.$alert({
-            title: '错误！',
-            message: message,
-            type: 'error',
-          })
-        },
-        complete (res) {
-          res.url = res.key;
-          res.name = json.file.name;
-          resolve(res);
-        }
-      };
-      let subscription = observable.subscribe(observer)
-    });
-  })
-} 

@@ -5,7 +5,7 @@
 import { isServer } from '~/environment'
 import {
     uaParser
-} from '~/plugins/uaparser'
+} from '~/plugins/common'
 export const actions = {
 
     nuxtServerInit(store, {
