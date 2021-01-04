@@ -79,7 +79,7 @@ export default {
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     'element-ui/lib/theme-chalk/index.css',
-    // '@/assets/theme/index.css',
+    '@/assets/theme/index.css',
     '@/assets/styles/base.css'
   ],
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -88,6 +88,14 @@ export default {
     '@/plugins/http',
     {
       src: '@/plugins/scroll',
+      ssr: false
+    },
+    {
+      src: '@/plugins/common-register',
+      ssr: false
+    },
+    {
+      src: '@/plugins/user',
       ssr: false
     }
   ],
@@ -102,7 +110,8 @@ export default {
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: [],
+  modules: [
+  ],
   styleResources: {
     scss: []
   },

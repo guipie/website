@@ -8,7 +8,7 @@
         <el-radio-group v-model="model.Type">
           <el-radio v-for="t in commentTypes" :key="t.key" :label="t.key">{{t.value}}</el-radio>
         </el-radio-group>
-        <el-button style="float:right;" @click="onSubmit" :loading="commenting">发布</el-button>
+        <el-button type="primary" style="float:right;" @click="onSubmit" :loading="commenting">发布</el-button>
       </el-form-item>
     </el-form>
     <div class="title">留言板</div>
@@ -52,7 +52,7 @@
 <script>
 import {
   DateDiff
-} from '~/plugins/uaparser'
+} from '~/plugins/common'
 export default {
   props: ["type"],
   computed: {
@@ -142,7 +142,7 @@ export default {
   },
 }
 </script>  
-<style>
+<style scoped>
 .title {
   font-size: 16px;
   padding-bottom: 6px;
