@@ -119,8 +119,9 @@ export default {
   build: {
     transpile: [/^element-ui/],
   },
-  loading: {
-    color: 'red',
-    height: '5px'
-  }
+  // loading: {
+  //   color: 'red',
+  //   height: '5px'
+  // } 
+  loading: '@/components/LoadingBar.vue'
 }

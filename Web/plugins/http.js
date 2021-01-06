@@ -18,6 +18,8 @@ service.interceptors.request.use(config => {
   config.headers['Content-Type'] = 'application/json';
   //  config.headers['Authorization'] = myApp.$cookies.get('token') || "";
   config.headers['Authorization'] = myApp.store.getters.token;
+  if (process.browser)
+    $nuxt.$loading.start();
   return config;
 }, error => {
   // do something with request error 
@@ -29,6 +31,8 @@ service.interceptors.response.use(
   /**  * If you want to get http information such as headers or status  * Please return  response => response  */
   /**  * Determine the request status by custom code  * Here is just an example  * You can also judge the status by HTTP Status Code  */
   response => {
+    if (process.browser)
+      $nuxt.$loading.finish();
     let res = response.data;
     if (res.status === 1)
     { return Promise.resolve(res) }
@@ -51,6 +55,8 @@ service.interceptors.response.use(
     return Promise.resolve(res)
   },
   error => {
+    if (process.browser)
+      $nuxt.$loading.error();
     let res = error.response;
     if (res && res.status == 401 && process.browser)
     {
