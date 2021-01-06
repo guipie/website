@@ -95,9 +95,13 @@
       <articleCard v-if="item.type=='article'" :news="item"></articleCard>
       <microCard v-else :news="item"></microCard>
     </div>
-    <el-pagination style="padding-bottom:50px;" :current-page.sync="currentPage" background layout="prev, pager, next"
-      :total="news.total">
-    </el-pagination>
+    <div class="el-pagination is-background" style="padding-bottom:50px;">
+      <ul class="el-pager">
+        <nuxt-link v-for="page in pages" :to="`?page=${page}`" :key="page">
+          <li class="number" :class="page===currentPage?'active':''">{{page}}</li>
+        </nuxt-link>
+      </ul>
+    </div>
     <el-dialog :visible.sync="tagsVisible">
       <Tags @getTag="getTag"></Tags>
     </el-dialog>
@@ -113,7 +117,8 @@ export default {
   data () {
     return {
       currentPage: 1,
-      news: [],
+      pages: 0,
+      news: {},
       percentage: 0,
       model: {
         Summary: "",
@@ -130,6 +135,7 @@ export default {
   computed: {
     stateNews () {
       this.news = this.$store.state.news.news;
+      this.pages = parseInt(this.news.total / this.news.size) + 1;
       return this.$store.state.news.news;
     }
   },
@@ -137,14 +143,13 @@ export default {
     stateNews: {
       handler (val) {
         this.news = val;
+        this.pages = parseInt(this.news.total / this.news.size) + 1;
       },
       deep: true
     },
     '$route' (to, from) {
       if (to.query.page != from.query.page)
         this.currentPage = parseInt(this.$route.query.page || 1);
-    },
-    currentPage () {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
     }
@@ -162,7 +167,6 @@ export default {
   //   return { news: data };
   // },
   mounted () {
-    this.currentPage = parseInt(this.$route.query.page || 1);
   },
   methods: {
     getTag (tag) { this.tags.push(tag); this.tagsVisible = false; },

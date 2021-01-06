@@ -4,12 +4,26 @@
 </template>
 <script> 
 export default {
-  fetch ({ store, route }) {
-    let unionWheres = [[{ name: "Type", value: "micro" },{ name: "Type", value: "pic" }]];
+  name: 'gp',
+  props: ["currentPage"],
+  fetch ({ store, query }) {
     return Promise.all([
-      store.dispatch('news/fetchNewsList', { page: 1, ...{ unionWheres: JSON.stringify(unionWheres) } }),
+      store.dispatch('news/fetchNewsList', {
+        page: query.page || 1,
+        sort: "CreateDate",
+        unionWheres: JSON.stringify([[{ name: "Type", value: "micro" }, { name: "Type", value: "pic" }]])
+      }),
     ])
   },
+  watch: {
+    currentPage (v) {
+      this.$store.dispatch('news/fetchNewsList', {
+        page: v,
+        sort: "CreateDate",
+        unionWheres: JSON.stringify([[{ name: "Type", value: "micro" }, { name: "Type", value: "pic" }]])
+      })
+    }
+  }
 }
 </script>
 <style scoped>
