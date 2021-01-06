@@ -1,7 +1,7 @@
 <template>
   <el-container class="gp-container">
     <el-header>
-      <gpHeader />
+      <GpHeader></GpHeader>
     </el-header>
     <el-row>
       <el-col :span="4">
