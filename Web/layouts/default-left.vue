@@ -15,7 +15,7 @@
       <el-menu-item index="all">
         <span>全部</span>
       </el-menu-item>
-      <el-menu-item index="micro">
+      <el-menu-item index="gp">
         <span>诡闻</span>
       </el-menu-item>
       <el-menu-item index="articles">
@@ -25,7 +25,7 @@
         <span>音频</span>
       </el-menu-item>
       <el-menu-item index="video">
-        <span>视频</span> 
+        <span>视频</span>
       </el-menu-item>
     </el-menu>
   </div>
@@ -39,6 +39,8 @@ export default {
       isCollapse: false,
       activeMenu: "/"
     };
+  },
+  mounted () {
   },
   computed: {
     isMobile () {

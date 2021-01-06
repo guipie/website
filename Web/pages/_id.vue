@@ -8,11 +8,13 @@
         <p v-html="detail.content"></p>
       </div>
       <div class="detail-body" v-else-if="detail.type=='pic'">
+        <p>{{detail.summary}}</p>
         <el-image @click="$openPreviews(covers)" v-for="url in covers" :src="url" :key="url" style="cursor:pointer;"
           fit="scale-down">
         </el-image>
       </div>
       <div class="detail-body" v-else-if="detail.type=='video'">
+        <p>{{detail.summary}}</p>
         <VideoPlayer :videoUrl="detail.videoUrl" :poster="getFileUrl(detail.coverImageUrls)" :newsId="detail.newsId">
         </VideoPlayer>
       </div>
@@ -37,6 +39,9 @@ import VoicePlayer from "@/components/content/voice-player.vue";
 import NewsComment from '~/components/comment';
 export default {
   name: "GpDetail",
+  layout: function (context) {
+    return 'empty'
+  },
   fetch ({ store, params }) {
     this.newsId = params.id;
     return Promise.all([
@@ -90,9 +95,9 @@ export default {
   font: 14px Base;
 }
 .detail-body image {
-  width: 100%;
+  max-width: 100%;
 }
 .detail-body img {
-  width: 100%;
+  max-width: 100%;
 }
 </style>

@@ -20,6 +20,7 @@
         </div>
       </el-col>
     </el-row>
+    <Bottom></Bottom>
   </el-container>
 </template>
 
@@ -27,10 +28,11 @@
 import GpHeader from "@/layouts/header.vue";
 import GpLeft from "@/layouts/default-left.vue";
 import GpRight from "@/layouts/default-right.vue";
+import Bottom from "@/layouts/bottom.vue";
 export default {
   components: {
     GpHeader,
-    GpLeft, GpRight
+    GpLeft, GpRight, Bottom
   },
   computed: {
     isMobile () {

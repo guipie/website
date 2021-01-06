@@ -24,7 +24,7 @@
     </el-row>
     <div class="micro-summary">
       <p>
-        <nuxt-link style="color: #757373;text-decoration: none;" target="_blank" :to="`/article/${news.newsId}`">
+        <nuxt-link style="color: #757373;text-decoration: none;" target="_blank" :to="`/${news.newsId}`">
           {{news.summary }}</nuxt-link>
       </p>
       <el-row v-if="news.type=='pic'">

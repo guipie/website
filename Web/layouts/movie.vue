@@ -14,14 +14,16 @@
         .
       </el-col>
     </el-row>
+    <Bottom></Bottom>
   </el-container>
 </template>
 
 <script>
 import GpHeader from "@/layouts/header.vue";
+import Bottom from "@/layouts/bottom.vue";
 export default {
   components: {
-    GpHeader
+    GpHeader, Bottom
   },
   computed: {
   },
