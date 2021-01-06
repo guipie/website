@@ -10,7 +10,7 @@
     <el-container>
       <el-main>
         <h5 class="content-title">
-          <nuxt-link target="_blank" :to="`/article/${news.newsId}`"> {{news.summary }}</nuxt-link>
+          <nuxt-link target="_blank" :to="`/${news.newsId}`"> {{news.summary }}</nuxt-link>
         </h5>
         <span class="description">{{ news.summary }}</span>
       </el-main>

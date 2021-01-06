@@ -1,12 +1,17 @@
 <template>
-  <el-dialog title="用户登录" :visible.sync="showLogin" @close="showLogin=false;" width="40%">
+  <el-dialog title="用户登录" style="background: #000;" :visible.sync="showLogin" @close="showLogin=false;" width="40%">
     <el-form :model="loginForm" placeholder="请输入您的用户名/邮箱/手机号" :rules="loginRules" status-icon ref="loginForm"
       label-width="100px">
       <el-form-item label="用户" prop="userName">
-        <el-input v-model="loginForm.userName" autocomplete="off"></el-input>
+        <el-input v-model="loginForm.userName" autocomplete="off" @keydown="submitLogin"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="passWord">
-        <el-input type="password" v-model="loginForm.passWord" autocomplete="off"></el-input>
+        <el-input type="password" v-model="loginForm.passWord" autocomplete="off" @keydown="submitLogin"></el-input>
+        <div style="text-align:right;">
+          <el-link href="/user?type=forget" type="danger">忘记密码</el-link>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <el-link href="/user?type=register" type="info">注册</el-link>
+        </div>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

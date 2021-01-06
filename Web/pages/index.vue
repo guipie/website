@@ -90,11 +90,14 @@
           @click="publish">发布</el-button>
       </div>
     </div>
-    <nuxt-child keep-alive></nuxt-child>
+    <nuxt-child keep-alive :currentPage="currentPage"></nuxt-child>
     <div v-for="item in news.data" :key="item.newsId" class="container-item">
       <articleCard v-if="item.type=='article'" :news="item"></articleCard>
       <microCard v-else :news="item"></microCard>
     </div>
+    <el-pagination style="padding-bottom:50px;" :current-page.sync="currentPage" background layout="prev, pager, next"
+      :total="news.total">
+    </el-pagination>
     <el-dialog :visible.sync="tagsVisible">
       <Tags @getTag="getTag"></Tags>
     </el-dialog>
@@ -109,6 +112,8 @@ import microCard from "@/components/content/content-micro.vue";
 export default {
   data () {
     return {
+      currentPage: 1,
+      news: [],
       percentage: 0,
       model: {
         Summary: "",
@@ -124,6 +129,7 @@ export default {
   },
   computed: {
     stateNews () {
+      this.news = this.$store.state.news.news;
       return this.$store.state.news.news;
     }
   },
@@ -133,21 +139,30 @@ export default {
         this.news = val;
       },
       deep: true
+    },
+    '$route' (to, from) {
+      if (to.query.page != from.query.page)
+        this.currentPage = parseInt(this.$route.query.page || 1);
+    },
+    currentPage () {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     }
   },
   components: { Tags, microCard, articleCard },
-  async asyncData ({ route, $http, error }) {
-    console.log(route);
-    let newsParams = {
-      order: "desc",
-      page: 1,
-      rows: 8,
-      sort: "IsRecommend,CreateDate"
-    };
-    let [data] = await Promise.all([$http.post("AppApi/News/Index", newsParams)]);
-    return { news: data };
-  },
+  // async asyncData ({ route, $http, error }) {
+  //   console.log(route);
+  //   let newsParams = {
+  //     order: "desc",
+  //     page: 1,
+  //     rows: 8,
+  //     sort: "IsRecommend,CreateDate"
+  //   };
+  //   let [data] = await Promise.all([$http.post("AppApi/News/Index", newsParams)]);
+  //   return { news: data };
+  // },
   mounted () {
+    this.currentPage = parseInt(this.$route.query.page || 1);
   },
   methods: {
     getTag (tag) { this.tags.push(tag); this.tagsVisible = false; },
@@ -280,7 +295,10 @@ export default {
       this.$http.post('AppApi/news/add', { MainData: this.model })
         .then(res => {
           if (res.code > 2000)
+          {
             Object.assign(this.$data, this.$options.data());
+            this.news = this.$store.state.news.news;
+          }
         })
         .catch(err => { console.log(err) });
     }
