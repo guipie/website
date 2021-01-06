@@ -25,8 +25,8 @@ export default {
 <style scoped>
 .loading-page {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 40%;
+  right: 48%;
   z-index: 1000;
   padding: 1rem;
   text-align: center;
@@ -41,7 +41,7 @@ export default {
   display: inline-block;
   width: 2rem;
   height: 2rem;
-  border: 5px solid #fff;
+  border: 5px solid rgb(241, 164, 164);
   border-radius: 50%;
   border-top-color: #000;
   animation: spin 1s ease-in-out infinite;
