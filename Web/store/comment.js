@@ -21,7 +21,7 @@ export const state = () => ({
 });
 //修改store中的变量的方法，如果你要改变变量的值，就写这（vuex中state中的值不能直接修改）
 const mutations = {
-  setComments (state, value, one) {
+  setComments (state, value) {
     state.comments.data = value.rows;
     state.comments.request.total = value.total;
   },

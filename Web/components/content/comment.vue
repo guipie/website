@@ -54,7 +54,7 @@ import {
   DateDiff
 } from '~/plugins/common'
 export default {
-  props: ["type"],
+  props: ["type", "newsId"],
   computed: {
     comments () {
       return this.$store.state.comment.comments.data;
@@ -80,10 +80,13 @@ export default {
     }
   },
   mounted () {
-    if (this.$route.params.id > 0)
+    this.$store.commit("comment/setComments", {});
+    if (this.newsId > 0)
     {
-      this.model.Type = this.type;
-      this.$store.dispatch("comment/fetchRootComments", [{ "name": "Type", "value": this.type }]);
+      this.model.Type = "news";
+      this.$store.dispatch("comment/fetchRootComments", [
+        { "name": "Type", "value": "news" },
+        { "name": "RelationId", "value": this.newsId }]);
     }
     else
     {
@@ -100,6 +103,7 @@ export default {
         if (valid)
         {
           this.commenting = true;
+          this.model.RelationId = this.newsId;
           this.$store.dispatch("comment/addComments", this.model)
             .then(m => {
               this.commenting = false;
