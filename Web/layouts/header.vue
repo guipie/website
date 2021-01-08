@@ -6,6 +6,9 @@
       </a>
     </el-col>
     <el-col :span="12" class="top-menu">
+      <el-link :underline="false" type="info" href="/bbs">
+        <h4 style="margin-top: 30px;">论 坛</h4>
+      </el-link>
       <el-link :underline="false" type="info" href="/movie" target="_blank">
         <h4 style="margin-top: 30px;">放映厅</h4>
       </el-link>

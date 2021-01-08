@@ -36,7 +36,7 @@ import {
 } from '@/environment'
 import VideoPlayer from "@/components/content/video-player.vue";
 import VoicePlayer from "@/components/content/voice-player.vue";
-import NewsComment from '~/components/comment';
+import NewsComment from '@/components/content/comment';
 export default {
   name: "GpDetail",
   layout: function (context) {
