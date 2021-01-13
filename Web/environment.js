@@ -16,7 +16,7 @@ export const isModern = process && process.modern
 
 
 export const Api_Domain = isDevMode ? "http://127.0.0.1:9991/" : "http://guipie.com:90/";
-export const File_Domain = isDevMode ? "http://127.0.0.1:9991/" : "http://guipie.com:90/";
+const File_Domain = isDevMode ? "http://127.0.0.1:9991/" : "http://guipie.com:90/";
 export const GetFileUrl = (url) => {
   if (url)
     return (url || "").startsWith("http") ? url : File_Domain + url;

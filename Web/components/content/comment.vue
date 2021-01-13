@@ -54,7 +54,7 @@ import {
   DateDiff
 } from '~/plugins/common'
 export default {
-  props: ["type", "newsId"],
+  props: ["type"],
   computed: {
     comments () {
       return this.$store.state.comment.comments.data;
@@ -81,14 +81,14 @@ export default {
   },
   mounted () {
     this.$store.commit("comment/setComments", {});
-    if (this.newsId > 0)
+    if (this.$route.params.id > 0)
     {
-      this.model.Type = "news";
       this.$store.dispatch("comment/fetchRootComments", [
         { "name": "Type", "value": "news" },
-        { "name": "RelationId", "value": this.newsId }]);
+        { "name": "RelationId", "value": this.$route.params.id }
+      ]);
     }
-    else
+    else if (this.type != "news")
     {
       this.$store.dispatch("dic/fetchCommentTypes");
       this.$store.dispatch("comment/fetchRootComments");
@@ -104,6 +104,7 @@ export default {
         {
           this.commenting = true;
           this.model.RelationId = this.newsId;
+          this.model.type = this.type;
           this.$store.dispatch("comment/addComments", this.model)
             .then(m => {
               this.commenting = false;
@@ -160,12 +161,12 @@ export default {
 }
 .name {
   font-size: 10px;
-  color: #f5efef;
+  color: #8a6767;
 }
 .desc {
   margin-left: 10px;
   font-size: 14px;
-  color: #fff;
+  color: #3c3131;
   position: relative;
   top: 5px;
 }
@@ -173,12 +174,12 @@ export default {
   padding-top: 5px;
 }
 .footer .time {
-  color: #dedada;
+  color: #d1c8c8;
   padding-bottom: 0;
   font-size: 10px;
 }
 .footer .right {
-  color: #f7eded;
+  color: #070707;
   float: right;
   font-size: 10px;
 }

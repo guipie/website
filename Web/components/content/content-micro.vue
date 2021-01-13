@@ -47,21 +47,25 @@
         <el-col class="time" :span="12">
           {{DateDiff(news.createDate)}}
         </el-col>
-        <el-col :span="12" style="text-align:right;">
-          <el-button class="right" @click="" type="text" icon="el-icon-star-off">
-            赞<span>42</span>
+        <el-col class="interact" :span="12">
+          <el-button class="el-icon-star-off" @click="news.disabled=true;praises(news);"
+            :disabled="news.praiseDisabled">
+            {{news.praiseCount}}
           </el-button>
-          <el-button class="right" type="text" icon="el-icon-chat-square" @click="comments(news.newsId)">
-            回复<span>1</span>
+          <el-button class="el-icon-chat-square" @click="comments(news.newsId)">
+            {{news.commentCount}}
           </el-button>
-          <el-button class="right" type="text" icon="el-icon-share" @click="">
-          </el-button>
+          <el-popover placement="bottom" width="160">
+            <div style="width:200px;" :id="'shareGp'+news.newsId">
+            </div>
+            <el-button slot="reference" class="el-icon-share" @click="share(news)"></el-button>
+          </el-popover>
         </el-col>
       </el-row>
     </el-card>
     <el-dialog title="留下你的诡记" :visible.sync="commentsDialog" width="50%" center>
       <div>
-        <Comments :newsId="commentsRelationId"></Comments>
+        <Comments :type="'news'"></Comments>
       </div>
     </el-dialog>
   </div>
@@ -77,6 +81,14 @@ import VideoPlayer from "@/components/content/video-player.vue";
 import VoicePlayer from "@/components/content/voice-player.vue";
 import Comments from "@/components/content/comment.vue";
 export default {
+  head: {
+    script: [
+      { src: 'https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js' }
+    ],
+    link: [
+      { rel: 'stylesheet', href: 'https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css' }
+    ]
+  },
   props: {
     news: {
       type: Object,
@@ -86,20 +98,43 @@ export default {
   components: { VideoPlayer, VoicePlayer, Comments },
   data () {
     return {
-      commentsDialog: false,
-      commentsRelationId: 0
+      commentsDialog: false
     }
   },
   computed: {
     covers () {
-      let cs = this.news.coverImageUrls.split(",");
+      let cs = (this.news.coverImageUrls || "").split(",");
       return cs.map(m => { return GetFileUrl(m); });
     }
   },
   methods: {
+    share (news) {
+      var $config = {
+        url: '/' + news.newsId, // 网址，默认使用 window.location.href
+        source: '', // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
+        title: news.title, // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+        origin: '', // 分享 @ 相关 twitter 账号
+        description: news.summary, // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+        image: this.covers, // 图片, 默认取网页中第一个img标签
+        // sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban'], // 启用的站点
+        disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
+        wechatQrcodeTitle: '微信扫一扫：分享', // 微信二维码提示文字
+        wechatQrcodeHelper: '<p>微信扫一下二维码</p><p>可将本文分享至朋友圈。</p>'
+      };
+
+      socialShare('#shareGp' + news.newsId, $config);
+    },
     comments (newsId) {
-      this.commentsRelationId = newsId;
+      this.$store.commit("comment/setComments", {});
       this.commentsDialog = true;
+      this.$store.dispatch("comment/fetchRootComments", [
+        { "name": "Type", "value": "news" },
+        { "name": "RelationId", "value": newsId }]);
+    },
+    praises (news) {
+      let clone = { ...news, ...{ praiseDisabled: true }, ...{ praiseCount: news.praiseCount + 1 } };
+      this.$store.commit("news/updateNews", clone);
+      this.$http.post('AppApi/newsPraise/add', { MainData: { NewsId: news.newsId }, noLoading: true });
     },
     getFileUrl (url) {
       return GetFileUrl(url);
@@ -149,6 +184,15 @@ export default {
   padding: 8px;
   color: #8f98a0;
   letter-spacing: 1px;
+}
+.footer .interact {
+  text-align: right;
+  font: 12px Extra small;
+}
+.interact button {
+  color: #000000;
+  cursor: pointer;
+  border: none;
 }
 .footer .right {
   color: #000000;

@@ -18,7 +18,7 @@ service.interceptors.request.use(config => {
   config.headers['Content-Type'] = 'application/json';
   //  config.headers['Authorization'] = myApp.$cookies.get('token') || "";
   config.headers['Authorization'] = myApp.store.getters.token;
-  if (process.browser && !config.noLoading)
+  if (process.browser && !config.data?.noLoading)
     $nuxt.$loading.start();
   return config;
 }, error => {

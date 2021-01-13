@@ -51,6 +51,11 @@ const mutations = {
   updateTypeData (state, action) {
     state.types.data = action;
   },
+  updateNews (state, news) { 
+    let index = state.news.data.findIndex(m => m.newsId == news.newsId);
+    if (index > -1)
+      state.news.data.splice(index, 1, news);
+  },
 };
 //actions提交的是mutations，相当于就是改变变量的方法的重写，但是，actions是可以进行异步操作的
 const actions = {
