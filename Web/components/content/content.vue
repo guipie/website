@@ -30,10 +30,10 @@
     </el-container>
   </el-container>
 </template>
-<script>
+<script> 
 import {
-  File_Domain
-} from '~/environment'
+  GetFileUrl
+} from '@/environment'
 export default {
   props: {
     news: {
@@ -49,9 +49,10 @@ export default {
     cover () {
       return this.covers.length > 0 ? this.covers[0] : "";
     },
+
     covers () {
       let cs = this.news.coverImageUrls.split(",");
-      return cs.map(m => { if (m.startsWith("http")) return m; else return File_Domain + m; });
+      return cs.map(m => { return GetFileUrl(m); });
     },
     videoUrl () {
       let url = this.news.videoUrl;

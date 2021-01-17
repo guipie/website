@@ -1,9 +1,14 @@
 <template>
   <div>
     <section class="page-component content">
-      <h2 id="icon-tu-biao">推荐论坛</h2>
+      <h2 id="icon-tu-biao">
+        <span>推荐论坛</span>
+        <el-button type="primary" style="float:right;" @click="dialogBBSVisible = true;">
+          申请论坛
+        </el-button>
+      </h2>
       <el-row>
-        <el-col :span="6" v-for="o in 5" :key="o">
+        <el-col :span="6" v-for="o in bbsRecommend" :key="o.id">
           <el-card :body-style="{ padding: '0px' }">
             <img src="/zanwei.gif" class="image">
             <div style="padding: 14px;">
@@ -20,8 +25,7 @@
       </el-row>
       <h3 id="tu-biao-ji-he">最新论坛</h3>
       <div class="jinsom-show-bbs-box-content clear">
-        <li>
-
+        <li v-for="o in bbs.data" :key="o.id">
           <a href="https://jjhuashui.com/archives/category/%e6%b0%b4%e5%8f%8b%e8%af%b4" target="_blank">
             <div class="top clear">
               <div class="left">
@@ -41,192 +45,28 @@
             <a href="https://jjhuashui.com/archives/category/%e6%b0%b4%e5%8f%8b%e8%af%b4" target="_blank">点击进入</a>
           </div>
         </li>
-
-        <li>
-
-          <a href="https://jjhuashui.com/archives/category/damon" target="_blank">
-            <div class="top clear">
-              <div class="left">
-                <img loading="lazy" src="http://www.jijihuashui.com/wp-content/uploads/2020/07/论坛.png"
-                  class="avatar opacity" alt="Damon">
-              </div>
-              <div class="right">
-                <div class="title">
-                  Damon</div>
-                <div class="desc" title=""></div>
-              </div>
-            </div>
-          </a>
-          <div class="bottom">
-            <span>内容：<i>0</i></span>
-            <span>关注：<i>0</i></span>
-            <a href="https://jjhuashui.com/archives/category/damon" target="_blank">点击进入</a>
-          </div>
-        </li>
-
-        <li>
-
-          <a href="https://jjhuashui.com/archives/category/%e6%90%9e%e7%ac%91%e3%80%81%e5%8a%a8%e5%9b%be%e3%80%81%e6%ae%b5%e5%ad%90"
-            target="_blank">
-            <div class="top clear">
-              <div class="left">
-                <img loading="lazy"
-                  src="https://jjcdn2.yangpinwang.com/wp-content/uploads/user_files/262/setting/76423931_1598235356.jpg"
-                  class="avatar opacity" alt="搞笑、动图、段子">
-              </div>
-              <div class="right">
-                <div class="title">
-                  搞笑、动图、段子</div>
-                <div class="desc" title="大家可以发有意思的搞笑的东西哦">大家可以发有意思的搞笑的东西哦</div>
-              </div>
-            </div>
-          </a>
-          <div class="bottom">
-            <span>内容：<i>10</i></span>
-            <span>关注：<i>22</i></span>
-            <a href="https://jjhuashui.com/archives/category/%e6%90%9e%e7%ac%91%e3%80%81%e5%8a%a8%e5%9b%be%e3%80%81%e6%ae%b5%e5%ad%90"
-              target="_blank">点击进入</a>
-          </div>
-        </li>
-
-        <li>
-
-          <a href="https://jjhuashui.com/archives/category/%e5%81%9c%e8%bd%a6%e5%9c%ba" target="_blank">
-            <div class="top clear">
-              <div class="left">
-                <img loading="lazy" src="http://www.jijihuashui.com/wp-content/uploads/2020/07/论坛.png"
-                  class="avatar opacity" alt="停车场">
-              </div>
-              <div class="right">
-                <div class="title">
-                  停车场</div>
-                <div class="desc" title=""></div>
-              </div>
-            </div>
-          </a>
-          <div class="bottom">
-            <span>内容：<i>0</i></span>
-            <span>关注：<i>1</i></span>
-            <a href="https://jjhuashui.com/archives/category/%e5%81%9c%e8%bd%a6%e5%9c%ba" target="_blank">点击进入</a>
-          </div>
-        </li>
-
-        <li>
-
-          <a href="https://jjhuashui.com/archives/category/%e7%88%b1%e5%90%83%e8%8f%9c%e9%a5%ad" target="_blank">
-            <div class="top clear">
-              <div class="left">
-                <img loading="lazy" src="http://www.jijihuashui.com/wp-content/uploads/2020/07/论坛.png"
-                  class="avatar opacity" alt="爱吃菜饭">
-              </div>
-              <div class="right">
-                <div class="title">
-                  爱吃菜饭</div>
-                <div class="desc" title=""></div>
-              </div>
-            </div>
-          </a>
-          <div class="bottom">
-            <span>内容：<i>0</i></span>
-            <span>关注：<i>1</i></span>
-            <a href="https://jjhuashui.com/archives/category/%e7%88%b1%e5%90%83%e8%8f%9c%e9%a5%ad"
-              target="_blank">点击进入</a>
-          </div>
-        </li>
-
-        <li>
-
-          <a href="https://jjhuashui.com/archives/category/%e9%81%a8%e6%b8%b8%e5%93%88%e5%93%88%e7%ad%be%e5%88%b0%e5%a4%84"
-            target="_blank">
-            <div class="top clear">
-              <div class="left">
-                <img loading="lazy" src="http://www.jijihuashui.com/wp-content/uploads/2020/07/论坛.png"
-                  class="avatar opacity" alt="遨游哈哈签到处">
-              </div>
-              <div class="right">
-                <div class="title">
-                  遨游哈哈签到处</div>
-                <div class="desc" title=""></div>
-              </div>
-            </div>
-          </a>
-          <div class="bottom">
-            <span>内容：<i>0</i></span>
-            <span>关注：<i>5</i></span>
-            <a href="https://jjhuashui.com/archives/category/%e9%81%a8%e6%b8%b8%e5%93%88%e5%93%88%e7%ad%be%e5%88%b0%e5%a4%84"
-              target="_blank">点击进入</a>
-          </div>
-        </li>
-
-        <li>
-
-          <a href="https://jjhuashui.com/archives/category/%e5%8d%97%e8%a1%ab" target="_blank">
-            <div class="top clear">
-              <div class="left">
-                <img loading="lazy" src="http://www.jijihuashui.com/wp-content/uploads/2020/07/论坛.png"
-                  class="avatar opacity" alt="南衫">
-              </div>
-              <div class="right">
-                <div class="title">
-                  南衫</div>
-                <div class="desc" title=""></div>
-              </div>
-            </div>
-          </a>
-          <div class="bottom">
-            <span>内容：<i>0</i></span>
-            <span>关注：<i>1</i></span>
-            <a href="https://jjhuashui.com/archives/category/%e5%8d%97%e8%a1%ab" target="_blank">点击进入</a>
-          </div>
-        </li>
-
-        <li>
-
-          <a href="https://jjhuashui.com/archives/category/bearhead001" target="_blank">
-            <div class="top clear">
-              <div class="left">
-                <img loading="lazy" src="http://www.jijihuashui.com/wp-content/uploads/2020/07/论坛.png"
-                  class="avatar opacity" alt="bearhead001">
-              </div>
-              <div class="right">
-                <div class="title">
-                  bearhead001</div>
-                <div class="desc" title=""></div>
-              </div>
-            </div>
-          </a>
-          <div class="bottom">
-            <span>内容：<i>0</i></span>
-            <span>关注：<i>1</i></span>
-            <a href="https://jjhuashui.com/archives/category/bearhead001" target="_blank">点击进入</a>
-          </div>
-        </li>
-
-        <li>
-          <a href="https://jjhuashui.com/archives/category/%e6%b8%b8%e6%88%8f%e5%a4%a7%e6%9d%82%e7%83%a9"
-            target="_blank">
-            <div class="top clear">
-              <div class="left">
-                <img loading="lazy"
-                  src="https://jjcdn2.yangpinwang.com/wp-content/uploads/user_files/113/setting/94794423_1598095154.jpg"
-                  class="avatar opacity" alt="游戏大杂烩">
-              </div>
-              <div class="right">
-                <div class="title">
-                  游戏大杂烩</div>
-                <div class="desc" title="由广大论坛玩家第一时间对最新PC游戏的作品进行发布、介绍及提供原创资源。">由广大论坛玩家第一时间对最新PC游戏的作品进行发布、介绍及提供原创资源。
-                </div>
-              </div>
-            </div>
-          </a>
-          <div class="bottom">
-            <span>内容：<i>8</i></span>
-            <span>关注：<i>34</i></span>
-            <a href="https://jjhuashui.com/archives/category/%e6%b8%b8%e6%88%8f%e5%a4%a7%e6%9d%82%e7%83%a9"
-              target="_blank">点击进入</a>
-          </div>
-        </li>
       </div>
+      <el-dialog title="社区论坛申请" :visible.sync="dialogBBSVisible">
+        <el-form :model="bbsForm" ref="bbsForm" :rules="bbsFormRules" label-width="100px" label-position="right">
+          <el-form-item label="论坛：" prop="Name">
+            <el-input v-model="bbsForm.Name" maxlength="10" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="封面图：">
+            <el-upload class="avatar-uploader" action="/" :show-file-list="false" :on-change="getImgBase"
+              :auto-upload="false">
+              <img v-if="bbsForm.BgImg" :src="bbsForm.BgImg" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="论坛描述：" prop="Description">
+            <el-input v-model="bbsForm.Description" maxlength="200" type="textarea" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogBBSVisible = false">取 消</el-button>
+          <el-button type="primary" :loading="bbsAddLoading" @click="bbsSubmit">确定创建</el-button>
+        </div>
+      </el-dialog>
     </section>
   </div>
 </template>
@@ -237,8 +77,78 @@ export default {
     link: [
       { rel: 'stylesheet', href: require('@/assets/styles/bbs.css') }
     ]
-  }
-
+  },
+  fetch ({ store }) {
+    return Promise.all([
+      store.dispatch('bbs/fetchBBSRecommend'),
+      store.dispatch("bbs/fetchBBS"),
+    ]);
+  },
+  computed: {
+    bbs () {
+      return this.$store.state.bbs.bbs;
+    },
+    bbsRecommend () {
+      return this.$store.state.bbs.bbsRecommend;
+    }
+  },
+  data () {
+    return {
+      dialogBBSVisible: false,
+      bbsAddLoading: false,
+      bbsForm: {},
+      bbsFormRules: {
+        Name: [
+          { required: true, message: '请输入论坛名称', trigger: 'blur' },
+          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: ['blur', 'change'] }
+        ],
+        Description: [
+          { max: 200, message: '长度在 2 到 10 个字符', trigger: ['blur', 'change'] }
+        ]
+      }
+    }
+  },
+  methods: {
+    getImgBase (file) {
+      return new Promise(function (resolve, reject) {
+        let reader = new FileReader();
+        let imgResult = "";
+        reader.readAsDataURL(file.raw);
+        reader.onload = function () {
+          imgResult = reader.result;
+        };
+        reader.onerror = function (error) {
+          reject(error);
+        };
+        reader.onloadend = function () {
+          resolve(imgResult);
+        };
+      }).then(res => {
+        this.$set(this.bbsForm, 'BgImg', res);
+      });
+    },
+    bbsSubmit () {
+      this.$refs['bbsForm'].validate((valid) => {
+        if (valid)
+        {
+          this.bbsAddLoading = true;
+          this.$http.post('AppApi/NewsType/add', { MainData: this.bbsForm })
+            .then(res => {
+              this.bbsAddLoading = false;
+              this.dialogBBSVisible = false;
+            })
+            .catch(err => {
+              console.log(err);
+              this.bbsAddLoading = false;
+            });
+        } else
+        {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    }
+  },
 }
 </script>
 <style>
@@ -291,5 +201,9 @@ html {
   padding: 0 !important;
   border: 1px solid #eaeefb;
   border-radius: 4px;
+}
+.avatar {
+  max-width: 200px;
+  max-height: 180px;
 }
 </style>

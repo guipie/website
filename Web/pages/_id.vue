@@ -27,7 +27,7 @@
         <p>{{detail.summary}}</p>
       </div>
     </el-card>
-    <newsComment :type="'news'"></newsComment>
+    <NewsComment :type="'news'"></NewsComment>
   </div>
 </template>
 <script>  
