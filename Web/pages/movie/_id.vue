@@ -52,9 +52,9 @@
   </div>
 </template>
 <script> 
-import xg_mp4_player from "~/components/moviePlayer/xg_mp4_player.vue";
-import xg_hls_player from "~/components/moviePlayer/xg_hls_player.vue";
-import iframe_player from "~/components/moviePlayer/iframe_player.vue";
+import xg_mp4_player from "@/components/movie_player/xg_mp4_player.vue";
+import xg_hls_player from "@/components/movie_player/xg_hls_player.vue";
+import iframe_player from "@/components/movie_player/iframe_player.vue";
 export default {
   fetch({ store, params }) {
     return Promise.all([

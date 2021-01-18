@@ -78,7 +78,7 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
-    'element-ui/lib/theme-chalk/index.css',
+    // 'element-ui/lib/theme-chalk/index.css',
     '@/assets/theme/index.css',
     '@/assets/styles/base.css'
   ],
@@ -123,5 +123,5 @@ export default {
   //   color: 'red',
   //   height: '5px'
   // } 
-  loading: '@/components/LoadingBar.vue'
+  loading: '@/components/Loading_bar.vue'
 }

@@ -73,10 +73,10 @@
 <script>
 import {
   GetFileUrl
-} from '~/environment'
+} from '@/environment'
 import {
   DateDiff
-} from '~/plugins/common'
+} from '@/plugins/common'
 import VideoPlayer from "@/components/content/video-player.vue";
 import VoicePlayer from "@/components/content/voice-player.vue";
 import Comments from "@/components/content/comment.vue";

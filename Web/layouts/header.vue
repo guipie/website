@@ -12,7 +12,7 @@
       <el-link :underline="false" type="info" href="/movie" target="_blank">
         <h4 style="margin-top: 30px;">放映厅</h4>
       </el-link>
-      <el-link :underline="false" type="info" href="/messageboard" target="_blank">
+      <el-link :underline="false" type="info" href="/message_board" target="_blank">
         <h4 style="margin-top: 30px;">诡记</h4>
       </el-link>
     </el-col>

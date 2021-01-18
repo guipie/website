@@ -2,7 +2,7 @@
  * @file 根数据状态，仅用以调度初始化任务 / ES module
  */
 
-import { isServer } from '~/environment'
+import { isServer } from '@/environment'
 import {
     uaParser
 } from '~/plugins/common'

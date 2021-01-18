@@ -1,10 +1,5 @@
 <template>
-<<<<<<< HEAD
   <el-dialog title="用户登录" style="background: #000;" :visible.sync="showLogin" @close="showLogin=false;" width="40%">
-=======
-  <el-dialog title="用户登录" style="background: #000;" :close-on-click-modal="false" :close-on-press-escape="false"
-    :visible.sync="showLogin" @close="showLogin=false;" width="40%">
->>>>>>> 04821e80a62b0770d268e5fdc5cae4c06fab6f90
     <el-form :model="loginForm" placeholder="请输入您的用户名/邮箱/手机号" :rules="loginRules" status-icon ref="loginForm"
       label-width="100px">
       <el-form-item label="用户" prop="userName">

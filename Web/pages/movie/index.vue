@@ -43,7 +43,7 @@
 
 <script>
 import { GetFileUrl } from "@/environment";
-import GpMovie from "~/components/moviePlayer/movie_item.vue";
+import GpMovie from "@/components/movie_player/movie_item.vue";
 export default {
   layout: function (context) {
     return 'default-movie'

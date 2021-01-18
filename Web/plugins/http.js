@@ -2,7 +2,7 @@ console.log("http.js");
 import axios from 'axios';
 import {
   Api_Domain
-} from '~/environment'
+} from '@/environment'
 let myApp;
 // create an axios instance 
 const service = axios.create({
@@ -18,11 +18,7 @@ service.interceptors.request.use(config => {
   config.headers['Content-Type'] = 'application/json';
   //  config.headers['Authorization'] = myApp.$cookies.get('token') || "";
   config.headers['Authorization'] = myApp.store.getters.token;
-<<<<<<< HEAD
-  if (process.browser && !config.noLoading)
-=======
   if (process.browser && !config.data?.noLoading)
->>>>>>> 04821e80a62b0770d268e5fdc5cae4c06fab6f90
     $nuxt.$loading.start();
   return config;
 }, error => {
