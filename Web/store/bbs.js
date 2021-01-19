@@ -24,7 +24,8 @@ const mutations = {
     state.bbsRecommend = value;
   },
   setBBS (state, value) {
-    state.bbs.data = value.data;
+    console.log(value.total);
+    state.bbs.data = [1, 2, 4];
     state.bbs.total = value.total
   }
 };

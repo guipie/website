@@ -47,5 +47,6 @@ export default {
 <style>
 .gp-container {
   height: 100%;
+  
 }
 </style>

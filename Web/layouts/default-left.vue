@@ -6,25 +6,25 @@
         <i class="el-icon-s-unfold" style="color: red"></i>
         <span></span>
       </el-menu-item>
-      <el-menu-item index="follow">
+      <el-menu-item index="/follow">
         <span>关注</span>
       </el-menu-item>
       <el-menu-item index="/">
         <span>推荐</span>
       </el-menu-item>
-      <el-menu-item index="all">
+      <el-menu-item index="/all">
         <span>全部</span>
       </el-menu-item>
-      <el-menu-item index="gp">
+      <el-menu-item index="/gp">
         <span>诡闻</span>
       </el-menu-item>
-      <el-menu-item index="articles">
+      <el-menu-item index="/articles">
         <span>文章</span>
       </el-menu-item>
-      <el-menu-item index="voice">
+      <el-menu-item index="/voice">
         <span>音频</span>
       </el-menu-item>
-      <el-menu-item index="video">
+      <el-menu-item index="/video">
         <span>视频</span>
       </el-menu-item>
     </el-menu>
@@ -37,10 +37,11 @@ export default {
   data () {
     return {
       isCollapse: false,
-      activeMenu: "/"
+      activeMenu: ""
     };
   },
   mounted () {
+    this.activeMenu = this.$route.path;
   },
   computed: {
     isMobile () {
