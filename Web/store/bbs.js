@@ -25,8 +25,8 @@ const mutations = {
   },
   setBBS (state, value) {
     console.log(value.total);
-    state.bbs.data = [1, 2, 4];
-    state.bbs.total = value.total
+    state.bbs = { ...state.bbs, ...value };
+    console.log(state.bbs);
   }
 };
 //actions提交的是mutations，相当于就是改变变量的方法的重写，但是，actions是可以进行异步操作的

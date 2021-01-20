@@ -1,8 +1,6 @@
 console.log("http.js");
 import axios from 'axios';
-import {
-  Api_Domain
-} from '@/environment'
+import { Api_Domain } from "@/environment"
 let myApp;
 // create an axios instance 
 const service = axios.create({
@@ -97,6 +95,6 @@ const request = {
 export default ({
   app
 }, inject) => {
-  myApp = app;
+  console.log(myApp);
   inject('http', request)
 }

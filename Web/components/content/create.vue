@@ -1,7 +1,7 @@
 <template>
   <div style="padding-top:20px;">
     <el-form :model="model" status-icon label-width="100px" :rules="rules" ref="contentRef">
-      <el-form-item :label="typeId>0?'帖子标题':'文章标题'" prop="Title">
+      <el-form-item :label="bbsId>0?'帖子标题':'文章标题'" prop="Title">
         <el-input v-model="model.Title" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item>
@@ -105,7 +105,7 @@ export default {
     };
   },
   props: {
-    typeId: {
+    bbsId: {
       type: Number
     }
   },
@@ -197,6 +197,7 @@ export default {
         if (valid)
         {
           let _this = this;
+          this.model.BbsId = this.bbsId;
           this.model.Tags = this.tags.toString();
           this.model.Content = editor.txt.html();
           this.model.CoverImageUrls = this.coversImgs.toString();

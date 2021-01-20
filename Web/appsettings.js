@@ -1,9 +1,8 @@
 /**
  * @file App config / ES module
- * @module app.config
- * @author Surmon <https://github.com/surmon-china>
- */
-
+ * @module appsettings
+ * @author monster
+ */ 
 export const meta = {
   title: '诡瞥,一个恐怖灵异网站社区',
   keywords: '恐怖,灵异,暗黑系网站,恐怖灵异网站,恐怖电影',

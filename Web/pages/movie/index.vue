@@ -7,7 +7,7 @@
       <el-carousel-item v-for="item in bannerMovies" :key="item.mappingId">
         <nuxt-link :to="'/movie/' + item.mappingId">
           <h3 class="carousel-h3">{{ item.description || item.title }}</h3>
-          <el-image :src="getBannerImg(item.bannerImg)"></el-image>
+          <el-image :src="$website.GetFileUrl(item.bannerImg)"></el-image>
         </nuxt-link>
       </el-carousel-item>
     </el-carousel>
@@ -35,51 +35,57 @@
     <div v-if="movieLoading" style="text-align: center; font-size: xx-large">
       <i class="el-icon-loading"></i>........
     </div>
-    <el-pagination :hide-on-single-page="total==0" @current-change="pageChange" v-if="total>0"
-      :current-page.sync="currentPage" background layout="prev, pager, next" :total="total">
+    <el-pagination
+      :hide-on-single-page="total == 0"
+      @current-change="pageChange"
+      v-if="total > 0"
+      :current-page.sync="currentPage"
+      background
+      layout="prev, pager, next"
+      :total="total"
+    >
     </el-pagination>
   </div>
 </template>
 
 <script>
-import { GetFileUrl } from "@/environment";
 import GpMovie from "@/components/movie_player/movie_item.vue";
 export default {
   layout: function (context) {
-    return 'default-movie'
+    return "default-movie";
   },
-  fetch ({ store }) {
+  fetch({ store }) {
     return Promise.all([
       // store.dispatch('movie/fetchTypeList'),
       store.dispatch("movie/fetchBannerMovies"),
     ]);
   },
   computed: {
-    types () {
+    types() {
       return this.$store.state.movie.types.data;
     },
-    movies () {
+    movies() {
       let list = this.$store.state.movie.movies.data;
       return list;
     },
-    total () {
+    total() {
       return this.$store.state.movie.movies.total;
     },
-    bannerMovies () {
+    bannerMovies() {
       return this.$store.state.movie.bannerMovies.data;
     },
   },
   components: { GpMovie },
-  data () {
+  data() {
     return {
       movieLoading: false,
       movieUrl: "/movie?t=" + new Date().getTime(),
       searchType: "",
       searchKey: "",
-      currentPage: 1
+      currentPage: 1,
     };
   },
-  mounted () {
+  mounted() {
     this.query();
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
@@ -89,43 +95,41 @@ export default {
     this.searchType = this.$route.query.type;
   },
   methods: {
-    query () {
+    query() {
       this.movieLoading = true;
       let wheres = [];
       let { type, s, page } = this.$route.query;
       this.currentPage = parseInt(page || 1);
       if (type) wheres.push({ name: "TypeId", value: type, displayType: "selectlist" });
       if (s) wheres.push({ name: "Name", value: s, displayType: "like" });
-      this.$store.dispatch("movie/fetchMovieList", {
-        ...{
-          order: "desc",
-          page: this.currentPage,
-          rows: 10,
-          sort: "IsRecommend,ModifyDate"
-        }, ...{ wheres: JSON.stringify(wheres) }
-      }).then(res => {
-        this.movieLoading = false;
-      }).catch(err => {
-        this.movieLoading = false;
-      })
+      this.$store
+        .dispatch("movie/fetchMovieList", {
+          ...{
+            order: "desc",
+            page: this.currentPage,
+            rows: 10,
+            sort: "IsRecommend,ModifyDate",
+          },
+          ...{ wheres: JSON.stringify(wheres) },
+        })
+        .then((res) => {
+          this.movieLoading = false;
+        })
+        .catch((err) => {
+          this.movieLoading = false;
+        });
     },
-    loginPress (e) {
-      if (e.keyCode == 13 && this.searchKey)
-        this.pageChange(1);
+    loginPress(e) {
+      if (e.keyCode == 13 && this.searchKey) this.pageChange(1);
     },
-    pageChange (current) {
-      let url = this.movieUrl + '&page=' + current;
-      if (this.searchKey)
-        url += "&s=" + this.searchKey;
-      if (this.searchType)
-        url += "&type=" + this.searchType;
+    pageChange(current) {
+      let url = this.movieUrl + "&page=" + current;
+      if (this.searchKey) url += "&s=" + this.searchKey;
+      if (this.searchType) url += "&type=" + this.searchType;
       window.location = url;
     },
-    getBannerImg (url) {
-      return GetFileUrl(url);
-    },
   },
-  head () {
+  head() {
     return {
       title: this.title,
       meta: [

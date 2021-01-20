@@ -1,15 +1,14 @@
 <template>
-  <div>
-  </div>
+  <div></div>
 </template>
-<script> 
+<script>
 export default {
-  fetch ({ store, route }) {
+  fetch({ store, route }) {
+    debugger;
     return Promise.all([
-      store.dispatch('news/fetchNewsList', { sort: "IsRecommend,CreateDate" }),
-    ])
+      store.dispatch("news/fetchNewsList", { sort: "IsRecommend,CreateDate" }),
+    ]);
   },
-}
+};
 </script>
-<style scoped>
-</style>
+<style scoped></style>

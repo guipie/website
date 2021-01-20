@@ -1,14 +1,12 @@
-
 <template>
   <div>
     <el-card class="box-card" shadow="hover">
       <el-row slot="header">
         <el-col :span="12">
-          <el-avatar :size="40" :src="getFileUrl(news.headImageUrl)">
-          </el-avatar>
-          <span class="user-name">{{news.userTrueName}}</span>
+          <el-avatar :size="40" :src="getFileUrl(news.headImageUrl)"> </el-avatar>
+          <span class="user-name">{{ news.userTrueName }}</span>
         </el-col>
-        <el-col :span="12" style="text-align:right;">
+        <el-col :span="12" style="text-align: right">
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
               <i class="el-icon-arrow-down el-icon--right"></i>
@@ -25,40 +23,67 @@
       </el-row>
       <div class="micro-summary">
         <p>
-          <nuxt-link style="color: #757373;text-decoration: none;" target="_blank" :to="`/${news.newsId}`">
-            {{news.summary }}</nuxt-link>
+          <nuxt-link
+            style="color: #757373; text-decoration: none"
+            target="_blank"
+            :to="`/${news.newsId}`"
+          >
+            {{ news.summary }}</nuxt-link
+          >
         </p>
-        <el-row v-if="news.type=='pic'">
+        <el-row v-if="news.type == 'pic'">
           <el-col :span="8" v-for="url in covers" :key="url">
-            <el-image @click="$openPreviews(covers)" style="cursor:pointer;" :src="url" fit="scale-down"></el-image>
+            <el-image
+              @click="$openPreviews(covers)"
+              style="cursor: pointer"
+              :src="url"
+              fit="scale-down"
+            ></el-image>
           </el-col>
         </el-row>
-        <el-row v-if="news.type=='video'" style="max-width:400px;">
-          <VideoPlayer :videoUrl="news.videoUrl" :poster="getFileUrl(news.coverImageUrls)" :newsId="news.newsId">
+        <el-row v-if="news.type == 'video'" style="max-width: 400px">
+          <VideoPlayer
+            :videoUrl="news.videoUrl"
+            :poster="getFileUrl(news.coverImageUrls)"
+            :newsId="news.newsId"
+          >
           </VideoPlayer>
         </el-row>
-        <el-row v-if="news.type=='voice'">
-          <VoicePlayer :voiceUrl="news.voiceUrl" :poster="getFileUrl(news.coverImageUrls)" :newsId="news.newsId">
+        <el-row v-if="news.type == 'voice'">
+          <VoicePlayer
+            :voiceUrl="news.voiceUrl"
+            :poster="getFileUrl(news.coverImageUrls)"
+            :newsId="news.newsId"
+          >
           </VoicePlayer>
         </el-row>
       </div>
       <el-divider></el-divider>
       <el-row class="footer">
         <el-col class="time" :span="12">
-          {{DateDiff(news.createDate)}}
+          {{ DateDiff(news.createDate) }}
         </el-col>
         <el-col class="interact" :span="12">
-          <el-button class="el-icon-star-off" @click="news.disabled=true;praises(news);"
-            :disabled="news.praiseDisabled">
-            {{news.praiseCount}}
+          <el-button
+            class="el-icon-star-off"
+            @click="
+              news.disabled = true;
+              praises(news);
+            "
+            :disabled="news.praiseDisabled"
+          >
+            {{ news.praiseCount }}
           </el-button>
           <el-button class="el-icon-chat-square" @click="comments(news.newsId)">
-            {{news.commentCount}}
+            {{ news.commentCount }}
           </el-button>
           <el-popover placement="bottom" width="160">
-            <div style="width:200px;" :id="'shareGp'+news.newsId">
-            </div>
-            <el-button slot="reference" class="el-icon-share" @click="share(news)"></el-button>
+            <div style="width: 200px" :id="'shareGp' + news.newsId"></div>
+            <el-button
+              slot="reference"
+              class="el-icon-share"
+              @click="share(news)"
+            ></el-button>
           </el-popover>
         </el-col>
       </el-row>
@@ -71,80 +96,90 @@
   </div>
 </template>
 <script>
-import {
-  GetFileUrl
-} from '@/environment'
-import {
-  DateDiff
-} from '@/plugins/common'
+import { DateDiff } from "@/plugins/common";
 import VideoPlayer from "@/components/content/video-player.vue";
 import VoicePlayer from "@/components/content/voice-player.vue";
 import Comments from "@/components/content/comment.vue";
 export default {
   head: {
     script: [
-      { src: 'https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js' }
+      { src: "https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" },
     ],
     link: [
-      { rel: 'stylesheet', href: 'https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css' }
-    ]
+      {
+        rel: "stylesheet",
+        href: "https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css",
+      },
+    ],
   },
   props: {
     news: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   components: { VideoPlayer, VoicePlayer, Comments },
-  data () {
+  data() {
     return {
-      commentsDialog: false
-    }
+      commentsDialog: false,
+    };
   },
   computed: {
-    covers () {
+    covers() {
       let cs = (this.news.coverImageUrls || "").split(",");
-      return cs.map(m => { return GetFileUrl(m); });
-    }
+      return cs.map((m) => {
+        return this.$website.GetFileUrl(m);
+      });
+    },
   },
   methods: {
-    share (news) {
+    share(news) {
       var $config = {
-        url: '/' + news.newsId, // 网址，默认使用 window.location.href
-        source: '', // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
+        url: "/" + news.newsId, // 网址，默认使用 window.location.href
+        source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
         title: news.title, // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
-        origin: '', // 分享 @ 相关 twitter 账号
+        origin: "", // 分享 @ 相关 twitter 账号
         description: news.summary, // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
         image: this.covers, // 图片, 默认取网页中第一个img标签
         // sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban'], // 启用的站点
-        disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
-        wechatQrcodeTitle: '微信扫一扫：分享', // 微信二维码提示文字
-        wechatQrcodeHelper: '<p>微信扫一下二维码</p><p>可将本文分享至朋友圈。</p>'
+        disabled: ["google", "facebook", "twitter"], // 禁用的站点
+        wechatQrcodeTitle: "微信扫一扫：分享", // 微信二维码提示文字
+        wechatQrcodeHelper: "<p>微信扫一下二维码</p><p>可将本文分享至朋友圈。</p>",
       };
 
-      socialShare('#shareGp' + news.newsId, $config);
+      socialShare("#shareGp" + news.newsId, $config);
     },
-    comments (newsId) {
+    comments(newsId) {
       this.$store.commit("comment/setComments", {});
       this.commentsDialog = true;
       this.$store.dispatch("comment/fetchRootComments", [
-        { "name": "Type", "value": "news" },
-        { "name": "RelationId", "value": newsId }]);
+        { name: "Type", value: "news" },
+        { name: "RelationId", value: newsId },
+      ]);
     },
-    praises (news) {
-      let clone = { ...news, ...{ praiseDisabled: true }, ...{ praiseCount: news.praiseCount + 1 } };
+    praises(news) {
+      let clone = {
+        ...news,
+        ...{ praiseDisabled: true },
+        ...{ praiseCount: news.praiseCount + 1 },
+      };
       this.$store.commit("news/updateNews", clone);
-      this.$http.post('AppApi/newsPraise/add', { MainData: { NewsId: news.newsId }, noLoading: true });
+      this.$http.post("AppApi/newsPraise/add", {
+        MainData: { NewsId: news.newsId },
+        noLoading: true,
+      });
     },
-    getFileUrl (url) {
+    getFileUrl(url) {
       return GetFileUrl(url);
     },
-    DateDiff (date) { return DateDiff(date); },
-    handleCommand (key) {
-      debugger
-    }
+    DateDiff(date) {
+      return DateDiff(date);
+    },
+    handleCommand(key) {
+      debugger;
+    },
   },
-}
+};
 </script>
 
 <style scope>

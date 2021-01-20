@@ -1,4 +1,4 @@
-import appConfig from './static/js/app.config.js'
+import appConfig from './appsettings'
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -99,7 +99,6 @@ export default {
       ssr: false
     }
   ],
-
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
 

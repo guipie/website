@@ -18,7 +18,7 @@ export default {
         {
           hid: "keywords",
           name: "keywords",
-          content: "创建内容贴子-诡瞥社区",
+          content: "创建内容-诡瞥社区",
         },
         {
           hid: "description",
@@ -27,15 +27,7 @@ export default {
         },
       ],
     };
-  },
-  data () {
-    return {
-      typeId: 0
-    }
-  },
-  mounted () {
-    this.typeId = this.$route.query.bbs;
-  },
+  }
 }
 </script>
 

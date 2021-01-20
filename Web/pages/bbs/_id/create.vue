@@ -1,43 +1,48 @@
 <template>
   <div>
-    <NewsCreate></NewsCreate>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+      <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+      <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+    </el-breadcrumb>
+    <NewsCreate :bbsId="bbsId"></NewsCreate>
   </div>
 </template>
 
 <script>
-import NewsCreate from '@/components/content/create'
+import NewsCreate from "@/components/content/create";
 export default {
   layout: function (context) {
-    return 'empty'
+    return "empty";
   },
   components: { NewsCreate },
-  head () {
+  head() {
     return {
       title: this.title,
       meta: [
         {
           hid: "keywords",
           name: "keywords",
-          content: "创建内容贴子-诡瞥社区",
+          content: "创建论坛贴子-诡瞥社区",
         },
         {
           hid: "description",
           name: "description",
-          content: "创建优质内容,尽在诡瞥社区.",
+          content: "优质恐怖灵异论坛,尽在诡瞥社区.",
         },
       ],
     };
   },
-  data () {
+  data() {
     return {
-      typeId: 0
-    }
+      bbsId: 0,
+    };
   },
-  mounted () {
-    this.typeId = this.$route.query.bbs;
+  mounted() {
+    this.bbsId = parseInt(this.$route.params.id);
   },
-}
+};
 </script>
 
-<style>
-</style>
+<style></style>

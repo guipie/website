@@ -4,7 +4,7 @@
       <el-carousel-item v-for="item in bannerNews" :key="item.mappingId">
         <nuxt-link :to="'/article/' + item.mappingId">
           <h3 class="carousel-h3">{{ item.description || item.title }}</h3>
-          <el-image :src="getBannerImg(item.bannerImg)"></el-image>
+          <el-image :src="$website.GetFileUrl(item.bannerImg)"></el-image>
         </nuxt-link>
       </el-carousel-item>
     </el-carousel>
@@ -12,23 +12,17 @@
 </template>
 
 <script>
-import { GetFileUrl } from "@/environment";
 export default {
   computed: {
-    bannerNews () {
+    bannerNews() {
       return this.$store.state.news.bannerNews.data;
-    }
-  },
-  mounted () {
-    this.$store.dispatch("news/fetchBannerNews")
-  },
-  methods: {
-    getBannerImg (url) {
-      return GetFileUrl(url);
     },
   },
-}
+  mounted() {
+    this.$store.dispatch("news/fetchBannerNews");
+  },
+  methods: {},
+};
 </script>
 
-<style>
-</style>
+<style></style>

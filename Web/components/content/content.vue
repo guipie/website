@@ -1,8 +1,13 @@
-
 <template>
   <el-container class="article">
-    <el-aside style="width: 33%;" v-if="news.coverImageUrls">
-      <el-image style="width: 100%; max-height: 160px" fit="contain" :src="cover" :preview-src-list="covers" lazy>
+    <el-aside style="width: 33%" v-if="news.coverImageUrls">
+      <el-image
+        style="width: 100%; max-height: 160px"
+        fit="contain"
+        :src="cover"
+        :preview-src-list="covers"
+        lazy
+      >
         <div slot="error" class="image-slot">图被偷走了.</div>
       </el-image>
       <i v-if="videoUrl" class="el-icon-video-play" style="postion: absolute"></i>
@@ -10,7 +15,7 @@
     <el-container>
       <el-main>
         <h5 class="content-title">
-          <nuxt-link target="_blank" :to="`/${news.newsId}`"> {{news.title }}</nuxt-link>
+          <nuxt-link target="_blank" :to="`/${news.newsId}`"> {{ news.title }}</nuxt-link>
         </h5>
         <span class="description">{{ news.summary }}</span>
       </el-main>
@@ -30,43 +35,38 @@
     </el-container>
   </el-container>
 </template>
-<script> 
-import {
-  GetFileUrl
-} from '@/environment'
+<script>
 export default {
   props: {
     news: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  data () {
-    return {
-    }
+  data() {
+    return {};
   },
   computed: {
-    cover () {
+    cover() {
       return this.covers.length > 0 ? this.covers[0] : "";
     },
 
-    covers () {
+    covers() {
       let cs = this.news.coverImageUrls.split(",");
-      return cs.map(m => { return GetFileUrl(m); });
+      return cs.map((m) => {
+        return this.$website.GetFileUrl(m);
+      });
     },
-    videoUrl () {
+    videoUrl() {
       let url = this.news.videoUrl;
-      if (url)
-      {
-        if (url.startsWith("http"))
-          return url;
-        else
-          return File_Domain + url;
+      if (url) {
+        if (url.startsWith("http")) return url;
+        else return File_Domain + url;
       }
       return "";
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
