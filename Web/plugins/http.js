@@ -95,6 +95,6 @@ const request = {
 export default ({
   app
 }, inject) => {
-  console.log(myApp);
+  myApp = app;
   inject('http', request)
 }

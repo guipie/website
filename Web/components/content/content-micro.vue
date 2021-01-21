@@ -3,7 +3,8 @@
     <el-card class="box-card" shadow="hover">
       <el-row slot="header">
         <el-col :span="12">
-          <el-avatar :size="40" :src="getFileUrl(news.headImageUrl)"> </el-avatar>
+          <el-avatar :size="40" :src="$website.GetFileUrl(news.headImageUrl)">
+          </el-avatar>
           <span class="user-name">{{ news.userTrueName }}</span>
         </el-col>
         <el-col :span="12" style="text-align: right">
@@ -44,7 +45,7 @@
         <el-row v-if="news.type == 'video'" style="max-width: 400px">
           <VideoPlayer
             :videoUrl="news.videoUrl"
-            :poster="getFileUrl(news.coverImageUrls)"
+            :poster="$website.GetFileUrl(news.coverImageUrls)"
             :newsId="news.newsId"
           >
           </VideoPlayer>
@@ -52,7 +53,7 @@
         <el-row v-if="news.type == 'voice'">
           <VoicePlayer
             :voiceUrl="news.voiceUrl"
-            :poster="getFileUrl(news.coverImageUrls)"
+            :poster="$website.GetFileUrl(news.coverImageUrls)"
             :newsId="news.newsId"
           >
           </VoicePlayer>
@@ -126,9 +127,10 @@ export default {
   },
   computed: {
     covers() {
+      let _this = this;
       let cs = (this.news.coverImageUrls || "").split(",");
       return cs.map((m) => {
-        return this.$website.GetFileUrl(m);
+        return _this.$website.GetFileUrl(m);
       });
     },
   },
@@ -168,9 +170,6 @@ export default {
         MainData: { NewsId: news.newsId },
         noLoading: true,
       });
-    },
-    getFileUrl(url) {
-      return GetFileUrl(url);
     },
     DateDiff(date) {
       return DateDiff(date);

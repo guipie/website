@@ -4,7 +4,6 @@
 <script>
 export default {
   fetch({ store, route }) {
-    debugger;
     return Promise.all([
       store.dispatch("news/fetchNewsList", { sort: "IsRecommend,CreateDate" }),
     ]);

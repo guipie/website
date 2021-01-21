@@ -209,7 +209,8 @@ export default {
   computed: {
     stateNews() {
       this.news = this.$store.state.news.news;
-      this.pages = parseInt(this.news.total / this.news.size) + 1;
+      let p = parseInt(this.news.total / this.news.size);
+      this.pages = p > 1 ? p : 1;
       return this.$store.state.news.news;
     },
   },
@@ -217,7 +218,8 @@ export default {
     stateNews: {
       handler(val) {
         this.news = val;
-        this.pages = parseInt(this.news.total / this.news.size) + 1;
+        let p = parseInt(this.news.total / this.news.size);
+        this.pages = p > 1 ? p : 1;
       },
       deep: true,
     },

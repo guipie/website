@@ -32,21 +32,21 @@ import Bottom from "@/layouts/bottom.vue";
 export default {
   components: {
     GpHeader,
-    GpLeft, GpRight, Bottom
+    GpLeft,
+    GpRight,
+    Bottom,
   },
   computed: {
-    isMobile () {
+    isMobile() {
       return this.$store.state.global.isMobile;
     },
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>
 
 <style>
 .gp-container {
   height: 100%;
-  
 }
 </style>

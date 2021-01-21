@@ -52,10 +52,11 @@ export default {
     },
 
     covers() {
-      let cs = this.news.coverImageUrls.split(",");
-      return cs.map((m) => {
-        return this.$website.GetFileUrl(m);
-      });
+      // let cs = this.news.coverImageUrls.split(",");
+      // return cs.map((m) => {
+      //   return this.$website.GetFileUrl(m);
+      // });
+      return [];
     },
     videoUrl() {
       let url = this.news.videoUrl;
