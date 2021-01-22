@@ -445,17 +445,7 @@ a {
 
 .jinsom-bbs-list-1-info span a {
   color: #999;
-}
-
-.jinsom-bbs-list-1 .right h2 a span {
-  padding: 2px 8px;
-  font-size: 12px;
-  color: #fff;
-  border-radius: 1px;
-  background: var(--jinsom-color);
-  margin-right: 10px;
-  line-height: 24px;
-}
+} 
 
 .jinsom-bbs-list-1 .right h2 a span i {
   display: inline-block;

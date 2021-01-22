@@ -1,12 +1,14 @@
 <template>
   <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding: 20px">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-      <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-      <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/bbs' }">论坛</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: `/bbs/${$parent.bbsId}` }">
+        jskldj
+      </el-breadcrumb-item>
+      <el-breadcrumb-item>发帖</el-breadcrumb-item>
     </el-breadcrumb>
-    <NewsCreate :bbsId="bbsId"></NewsCreate>
+    <NewsCreate :bbsId="new Number($parent.bbsId)"></NewsCreate>
   </div>
 </template>
 
@@ -35,13 +37,9 @@ export default {
     };
   },
   data() {
-    return {
-      bbsId: 0,
-    };
+    return {};
   },
-  mounted() {
-    this.bbsId = parseInt(this.$route.params.id);
-  },
+  mounted() {},
 };
 </script>
 

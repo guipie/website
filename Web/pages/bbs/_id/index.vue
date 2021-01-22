@@ -2,7 +2,7 @@
   <div class="jinsom-bbs-box" style="min-height: 300px">
     <el-breadcrumb separator-class="el-icon-arrow-right" style="padding: 20px">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/bbs' }">论坛</el-breadcrumb-item>
       <el-breadcrumb-item>活动列表</el-breadcrumb-item>
       <el-breadcrumb-item>活动详情</el-breadcrumb-item>
     </el-breadcrumb>
@@ -18,25 +18,25 @@
       </div>
     </div>
     <div class="jinsom-bbs-list-box">
-      <div class="jinsom-bbs-list-1" v-for="post in posts" :key="post.newsId">
+      <div class="jinsom-bbs-list-1" v-for="post in posts.data" :key="post.newsId">
         <div class="left clear">
           <nuxt-link to="/user" target="_blank">
             <img
-              loading="lazy"
-              src="https://jjcdn2.yangpinwang.com/wp-content/uploads/2020/07/u19906250983468619056fm11gp0-1.jpg"
+              :src="$website.GetFileUrl(post.headImageUrl)"
               class="avatar opacity"
               width="50"
               height="50"
-              alt="蓝风"
             />
           </nuxt-link>
         </div>
         <div class="right">
           <h2>
-            <a href="https://jjhuashui.com/archives/80680" target="_blank">
-              发帖
-              <span class="cat-item-19">搞笑、动图、段子</span>
-            </a>
+            <nuxt-link :to="'/bbs/post/' + post.newsId" target="_blank">
+              {{ post.title }}
+            </nuxt-link>
+            <el-link type="info" v-for="tag in getTags(post.tags)" :key="tag"
+              >#{{ tag }}#</el-link
+            >
           </h2>
           <span class="mark">
             <span class="jinsom-bbs-post-type-img">
@@ -48,11 +48,13 @@
             <div class="jinsom-bbs-list-1-info-left">
               <span>
                 <a href="https://jjhuashui.com/archives/author/2098" target="_blank">
-                  <i class="el-icon-user"></i>蓝风</a
+                  <i class="el-icon-user"></i>{{ post.userTrueName }}</a
                 >
               </span>
-              <span>1月前</span>
-              <span><i class="el-icon-view"></i> 1.3k</span>
+              <span> {{ DateDiff(post.modifyDate) }}</span>
+              <span
+                ><i class="el-icon-view"></i>{{ parseInt(Math.random() * 1000) }}</span
+              >
             </div>
             <div class="jinsom-bbs-list-1-info-right"></div>
           </div>
@@ -60,7 +62,11 @@
       </div>
       <div class="el-pagination is-background" style="padding-bottom: 50px">
         <ul class="el-pager">
-          <nuxt-link v-for="page in 15" :to="`?page=${page}`" :key="page">
+          <nuxt-link
+            v-for="page in Math.ceil(posts.total / 10)"
+            :to="`?page=${page}`"
+            :key="page"
+          >
             <li class="number" :class="page === 1 ? 'active' : ''">{{ page }}</li>
           </nuxt-link>
         </ul>
@@ -70,6 +76,7 @@
 </template>
 
 <script>
+import { DateDiff } from "@/plugins/common";
 export default {
   fetch({ store, route }) {
     let wheres = [{ name: "BbsId", value: route.params.id }];
@@ -83,11 +90,17 @@ export default {
   },
   computed: {
     posts() {
-      debugger;
       return this.$store.state.news.news;
     },
   },
   mounted() {},
+  methods: {
+    getTags(tags) {
+      if (tags) return tags.split(",");
+      return [];
+    },
+    DateDiff: DateDiff,
+  },
 };
 </script>
 

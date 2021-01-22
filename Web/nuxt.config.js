@@ -95,6 +95,9 @@ export default {
       ssr: false
     },
     {
+      src: '@/plugins/common-register-ssr'
+    },
+    {
       src: '@/plugins/user',
       ssr: false
     }

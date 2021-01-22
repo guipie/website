@@ -26,7 +26,7 @@
       <h3 id="tu-biao-ji-he">最新论坛</h3>
       <div class="jinsom-show-bbs-box-content clear">
         <li v-for="o in bbs.data" :key="o.id">
-          <nuxt-link target="_blank" :to="`/bbs/${o.id}`">
+          <nuxt-link :to="`/bbs/${o.id}`">
             <div class="top clear">
               <div class="left">
                 <img
@@ -52,7 +52,7 @@
             <span
               >关注：<i>{{ parseInt(Math.random() * 10 + 1) }}</i></span
             >
-            <nuxt-link target="_blank" :to="`/bbs/${o.id}`">点击进入</nuxt-link>
+            <nuxt-link :to="`/bbs/${o.id}`">点击进入</nuxt-link>
           </div>
         </li>
       </div>

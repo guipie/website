@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import PreviewImage from '@/components/common/previewImg'
-import { File_Domain } from "@/environment"
 const Preview = {};
 // 注册
 Preview.install = function (Vue) {
@@ -23,15 +22,3 @@ Preview.install = function (Vue) {
   };
 };
 Vue.use(Preview);
-var websiteVue = {
-  install (Vue) {
-    Vue.prototype.$website = {
-      GetFileUrl (url) {
-        if (url)
-          return (url || "").startsWith("http") ? url : File_Domain + url;
-        return "";
-      }
-    }
-  }
-}
-Vue.use(websiteVue);
