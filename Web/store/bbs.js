@@ -1,22 +1,21 @@
 console.log("bbs.js");
 const api = {
   bbsRecommendList: "AppApi/NewsType/recommend",
-  bbsList: "AppApi/NewsType/index",
-  bbsDetail: "AppApi/NewsType/"
+  bbsList: "AppApi/NewsType/index"
 };
 //state里面存放的是变量，如果你要注册全局变量，写这里
 export const state = () => ({
+  currentBbs: {},
   bbsRecommend: [],
   bbs: {
     data: [],
     request: {
       order: "asc",
       page: 1,
-      rows: 20,
+      rows: 5,
       sort: "Sequence,ModifyDate"
     }
-  },
-  bbsDetail: {}
+  }
 });
 //修改store中的变量的方法，如果你要改变变量的值，就写这（vuex中state中的值不能直接修改）
 const mutations = {
@@ -24,11 +23,10 @@ const mutations = {
     state.bbsRecommend = value;
   },
   setBBS (state, value) {
-    console.log(value.total);
     state.bbs = { ...state.bbs, ...value };
   },
-  setBBSDetail (state, value) {
-    state.bbsDetal = value;
+  setCurrentBBS (state, current) {
+    state.currentBbs = current;
   }
 };
 //actions提交的是mutations，相当于就是改变变量的方法的重写，但是，actions是可以进行异步操作的
@@ -36,7 +34,7 @@ const actions = {
   fetchBBSRecommend ({
     commit
   }) {
-    this.$http.get(api.bbsRecommendList)
+    return this.$http.get(api.bbsRecommendList)
       .then(data => {
         commit('setBBSRecommend', data);
       }).catch(error => console.log(error))
@@ -45,19 +43,11 @@ const actions = {
     commit,
     state
   }, params = {}) {
-    this.$http.post(api.bbsList, {
+    return this.$http.post(api.bbsList, {
       ...state.bbs.request,
       ...params
     }).then(data => {
       commit('setBBS', data);
-    }).catch(error => console.log(error))
-  },
-  fetchBBSDetail ({
-    commit,
-    state
-  }, bbsId) {
-    this.$http.post(api.bbsDetail + bbsId).then(data => {
-      commit('setBBSDetail', data);
     }).catch(error => console.log(error))
   }
 };

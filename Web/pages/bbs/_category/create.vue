@@ -3,12 +3,12 @@
     <el-breadcrumb separator-class="el-icon-arrow-right" style="padding: 20px">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/bbs' }">论坛</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: `/bbs/${$parent.bbsId}` }">
-        jskldj
+      <el-breadcrumb-item :to="{ path: `/bbs/${ $parent.bbsDetail.name}` }">
+        {{ $parent.bbsDetail.name}}
       </el-breadcrumb-item>
       <el-breadcrumb-item>发帖</el-breadcrumb-item>
     </el-breadcrumb>
-    <NewsCreate :bbsId="new Number($parent.bbsId)"></NewsCreate>
+    <NewsCreate :bbsId="new Number($parent.bbsDetail.id)"></NewsCreate>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
     return "empty";
   },
   components: { NewsCreate },
-  head() {
+  head () {
     return {
       title: this.title,
       meta: [
@@ -35,11 +35,7 @@ export default {
         },
       ],
     };
-  },
-  data() {
-    return {};
-  },
-  mounted() {},
+  }
 };
 </script>
 

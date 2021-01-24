@@ -17,7 +17,7 @@ service.interceptors.request.use(config => {
   //  config.headers['Authorization'] = myApp.$cookies.get('token') || "";
   config.headers['Authorization'] = myApp.store.getters.token;
   if (process.browser && !config.data?.noLoading)
-    $nuxt.$loading.start();
+    myApp.store.commit("global/requestLoading");
   return config;
 }, error => {
   // do something with request error 
@@ -30,8 +30,9 @@ service.interceptors.response.use(
   /**  * Determine the request status by custom code  * Here is just an example  * You can also judge the status by HTTP Status Code  */
   response => {
     if (process.browser)
-      $nuxt.$loading.finish();
+      myApp.store.commit("global/requestLoaded");
     let res = response.data;
+    if (res == "" || res == null || res == undefined) return Promise.resolve({});
     if (res.status === 1)
     { return Promise.resolve(res) }
     else if (res.status === false && process.browser)
@@ -42,7 +43,7 @@ service.interceptors.response.use(
         type: 'warning'
       });
     }
-    else if (res.status === true && process.browser)
+    else if (res.status === true && process.browser && res.message)
     {
       $nuxt.$notify({
         title: '成功提示',
@@ -54,7 +55,7 @@ service.interceptors.response.use(
   },
   error => {
     if (process.browser)
-      $nuxt.$loading.error();
+      myApp.store.commit("global/requestLoaded");
     let res = error.response;
     if (res && res.status == 401 && process.browser)
     {

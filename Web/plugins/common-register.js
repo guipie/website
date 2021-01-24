@@ -22,3 +22,4 @@ Preview.install = function (Vue) {
   };
 };
 Vue.use(Preview);
+Vue.prototype.requestLoad = false;

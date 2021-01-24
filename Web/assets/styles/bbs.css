@@ -132,23 +132,23 @@ a {
   color: #333;
   text-decoration: none;
 }
- 
- 
+
+
 .jinsom-bbs-header-info {
-  margin: auto; 
+  margin: auto;
   background: -moz-linear-gradient(top, #000000 0%, #ffffff 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#000000), color-stop(100%,#ffffff));
-  background: -webkit-linear-gradient(top, #000000 0%,#ffffff 100%);
-  background: -o-linear-gradient(top, #000000 0%,#ffffff 100%);
-  background: -ms-linear-gradient(top, #000000 0%,#ffffff 100%);
-  background: linear-gradient(to bottom, #000000 0%,#ffffff 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #000000), color-stop(100%, #ffffff));
+  background: -webkit-linear-gradient(top, #000000 0%, #ffffff 100%);
+  background: -o-linear-gradient(top, #000000 0%, #ffffff 100%);
+  background: -ms-linear-gradient(top, #000000 0%, #ffffff 100%);
+  background: linear-gradient(to bottom, #000000 0%, #ffffff 100%);
   padding-bottom: 20px;
   border-top: none;
   padding-right: 30px;
 }
 
 .jinsom-bbs-header-info-avatar {
-  margin-top: -70px;
+  margin-top: 20px;
   left: 30px;
   float: left;
   z-index: 99;
@@ -214,7 +214,7 @@ a {
 
 .jinsom-bbs-header-info-btn {
   margin-left: 220px;
-  padding-top: 20px;
+  padding-top: 90px;
 }
 
 .jinsom-bbs-header-info-btn .name {
@@ -252,8 +252,9 @@ a {
   float: left;
 }
 
-.jinsom-bbs-header-info-btn .follow.had {
-  background-color: #888;
+.follow.disable {
+  cursor: not-allowed;
+  background-color: #f39595;
 }
 
 .jinsom-bbs-header-publish-btn {
@@ -289,7 +290,7 @@ a {
 
 .jinsom-bbs-header-info-desc {
   margin-left: 220px;
-  margin-top: -20px;
+  margin-top: -40px;
 }
 
 
@@ -417,6 +418,8 @@ a {
 .jinsom-bbs-list-1 .right .num {
   float: right;
   color: #999;
+  font-size: larger;
+  padding-left: 20px;
 }
 
 .jinsom-bbs-list-1-info {
@@ -445,7 +448,7 @@ a {
 
 .jinsom-bbs-list-1-info span a {
   color: #999;
-} 
+}
 
 .jinsom-bbs-list-1 .right h2 a span i {
   display: inline-block;
@@ -484,4 +487,24 @@ a {
   background-color: #f1f1f1;
   display: flex;
   border-radius: 4px;
+}
+
+/* 帖子详情页 */
+.bbs-detail {
+  min-height: 300px;
+  position: relative;
+  margin-top: 20px;
+}
+
+.bbs-detail .bbs-detail-left {
+  height: 100%;
+  background-color: #fff6;
+  position: absolute;
+}
+
+.bbs-detail .bbs-detail-right {
+  height: 100%;
+  background-color: #fff;
+  position: absolute;
+  right: 0px;
 }

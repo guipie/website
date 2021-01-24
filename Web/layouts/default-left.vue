@@ -27,6 +27,9 @@
       <el-menu-item index="/video">
         <span>视频</span>
       </el-menu-item>
+      <el-menu-item index="/bbs">
+        <span>论坛</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

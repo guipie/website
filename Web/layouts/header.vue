@@ -68,7 +68,6 @@ export default {
 
 <style>
 .el-header {
-  padding: 0%;
   background-color: #000000;
 }
 .col1 {

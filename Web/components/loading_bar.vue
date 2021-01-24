@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="spinner">
+  <div ref="loadingBar" class="spinnerHide">
     <div class="bounce1"></div>
     <div class="bounce2"></div>
     <div class="bounce3"></div>
@@ -11,13 +11,13 @@ export default {
     loading: false,
   }),
   methods: {
-    start() {
-      this.loading = true;
+    start () {
+      this.$refs["loadingBar"].className = 'spinner';
     },
-    finish() {
-      this.loading = false;
+    finish () {
+      this.$refs["loadingBar"].className = 'spinnerHide';
     },
-    error(txt) {
+    error (txt) {
       this.loading = false;
       this.errorTxt = txt || "error";
     },
@@ -25,11 +25,17 @@ export default {
 };
 </script>
 <style scoped>
+.spinnerHide {
+  display: none;
+  z-index: -1;
+}
 .spinner {
+  display: block;
   text-align: center;
   position: absolute;
   left: 50%;
   top: 40%;
+  z-index: 10000000000;
 }
 .spinner > div {
   width: 30px;

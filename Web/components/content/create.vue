@@ -13,7 +13,7 @@
       </el-form-item>
       <el-form-item v-if="showMore">
         <div style="padding-bottom:10px;">
-          <el-input type="textarea" maxlength="200" :rows="3" placeholder="请输入文章简介." v-model="model.summary">
+          <el-input type="textarea" maxlength="200" :rows="3" placeholder="请输入文章简介." v-model="model.Summary">
           </el-input>
         </div>
         <el-row :span="24">
@@ -99,7 +99,7 @@ export default {
       rules: {
         Title: [
           { required: true, message: '请输入标题', trigger: 'blur' },
-          { min: 5, max: 20, message: '标题长度在5 到 20 个字符', trigger: 'blur' }
+          { min: 5, max: 30, message: '标题长度在5 到 30 个字符', trigger: 'blur' }
         ]
       }
     };
@@ -201,18 +201,16 @@ export default {
           this.model.Tags = this.tags.toString();
           this.model.Content = editor.txt.html();
           this.model.CoverImageUrls = this.coversImgs.toString();
+          if (!this.model.Summary)
+            this.model.Summary = editor.txt.text().substr(0, 200);
           if (!this.model.Content)
             return this.$message.warning("文章内容必填..");
           this.loading = true;
           this.$http.post('AppApi/news/add', { MainData: this.model })
             .then(res => {
               this.loading = false;
-              if (res.code > 2000)
-              {
-                editor.txt.clear();
-                Object.assign(this.$data, this.$options.data());
-                this.$refs["contentRef"].resetFields();
-              }
+              if (res.status)
+                this.resetForm();
             })
             .catch(err => { console.log(err); this.loading = false; });
         } else
