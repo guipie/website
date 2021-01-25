@@ -21,7 +21,7 @@
       </div>
       <div class="jinsom-bbs-header-info-desc clear">{{bbsDetail.description}}</div>
     </div>
-    <nuxt-child keep-alive></nuxt-child>
+    <nuxt-child></nuxt-child>
   </div>
 </template>
 

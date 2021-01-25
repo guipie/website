@@ -33,15 +33,12 @@ body {
   background-size: cover;
 }
 
-
-.container {
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  /* color: #ffffff; */
+.gp-container{ 
   height: 100%;
 }
-
+.gp-container .container{
+  margin: 20px 10%;
+}
 .publish .el-row {
   margin-top: 5px;
 }

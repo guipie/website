@@ -3,7 +3,7 @@
     <el-header>
       <gpHeader />
     </el-header>
-    <el-row>
+    <el-row class="container">
       <el-col :span="6" v-if="!isMobile">
         <div class="col1">
           <GpLeft></GpLeft>
@@ -45,8 +45,5 @@ export default {
 };
 </script>
 
-<style>
-.gp-container {
-  height: 100%;
-}
+<style> 
 </style>

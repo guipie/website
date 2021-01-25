@@ -12,7 +12,7 @@ export const state = () => ({
     request: {
       order: "asc",
       page: 1,
-      rows: 5,
+      rows: 20,
       sort: "Sequence,ModifyDate"
     }
   }

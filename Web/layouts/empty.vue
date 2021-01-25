@@ -3,7 +3,7 @@
     <el-header>
       <GpHeader></GpHeader>
     </el-header>
-    <el-row>
+    <el-row class="container">
       <el-col :span="4">
         <div class="col1">
           .
@@ -36,8 +36,5 @@ export default {
 };
 </script>
 
-<style>
-.gp-container {
-  height: 100%;
-}
+<style> 
 </style>

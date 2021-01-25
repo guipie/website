@@ -500,6 +500,11 @@ a {
   height: 100%;
   background-color: #fff6;
   position: absolute;
+  text-align: center;
+}
+
+.bbs-detail .bbs-detail-left .avatar {
+  padding-top: 10%;
 }
 
 .bbs-detail .bbs-detail-right {

@@ -10,7 +10,7 @@
     </el-breadcrumb>
     <el-row v-for="i in 10" :key="i" class="bbs-detail">
       <el-col :span="6" class="bbs-detail-left">
-        <div>
+        <div class="avatar">
           <el-avatar :size="60" src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png">
           </el-avatar>
           <div>
@@ -19,7 +19,8 @@
         </div>
       </el-col>
       <el-col :span="18" class="bbs-detail-right">
-        ddd
+        <div class="bbs-detail-content" v-html="articleDetail.content">
+        </div>
       </el-col>
     </el-row>
   </div>

@@ -12,7 +12,7 @@
           <el-card :body-style="{ padding: '0px' }">
             <img :src="o.bgImg ? o.bgImg : '/zanwei_bbs.png'" class="image" />
             <div style="padding: 14px">
-              <nuxt-link target="_blank" :to="`/bbs/${o.id}`">
+              <nuxt-link  :to="`/bbs/${o.name}`">
                 <span>{{ o.name }}</span>
                 <div class="bottom clearfix">
                   <time class="time">{{ o.description }}</time>
@@ -75,9 +75,6 @@
 <script>
 export default {
   layout: "empty",
-  head: {
-    link: [{ rel: "stylesheet", href: '/css/bbs.css' }],
-  },
   fetch ({ store }) {
     return Promise.all([
       store.dispatch("bbs/fetchBBS"),
@@ -160,6 +157,7 @@ export default {
 };
 </script>
 <style>
+@import '@/assets/styles/bbs.css';
 body,
 html {
   margin: 0;
