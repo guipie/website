@@ -494,12 +494,12 @@ a {
   min-height: 300px;
   position: relative;
   margin-top: 20px;
+  display: flex;
 }
 
 .bbs-detail .bbs-detail-left {
-  height: 100%;
+  height: auto !important;
   background-color: #fff6;
-  position: absolute;
   text-align: center;
 }
 
@@ -508,8 +508,44 @@ a {
 }
 
 .bbs-detail .bbs-detail-right {
-  height: 100%;
+  height: auto !important;
   background-color: #fff;
+  float: right;
+}
+
+.bbs-detail-right .bbs-detail-content {
+  margin: 15px;
+}
+
+.guajian {
+  width: 60px;
+  position: fixed;
+  right: 10%;
+  top: 40%;
+}
+
+.guajian .is-circle {
+  display: block;
+  margin-left: 0px;
+}
+
+.guajian .is-circle i {
+  font-size: 25px;
+}
+
+.bbs-detail-footer {
   position: absolute;
-  right: 0px;
+  bottom: 2px;
+  font-size: small;
+  color: #9a8282;
+  right: 5px;
+}
+
+.bbs-detail-footer span {
+  margin-right: 10px;
+}
+
+.bbs-detail-footer .replyComment:hover {
+  cursor: pointer;
+  color: #beb9b9;
 }

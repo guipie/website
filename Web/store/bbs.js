@@ -1,7 +1,8 @@
 console.log("bbs.js");
 const api = {
   bbsRecommendList: "AppApi/NewsType/recommend",
-  bbsList: "AppApi/NewsType/index"
+  bbsList: "AppApi/NewsType/index",
+  bbsNewsAppendList: "AppApi/NewsAppend/index"
 };
 //state里面存放的是变量，如果你要注册全局变量，写这里
 export const state = () => ({
@@ -12,7 +13,16 @@ export const state = () => ({
     request: {
       order: "asc",
       page: 1,
-      rows: 20,
+      rows: 10,
+      sort: "Sequence,ModifyDate"
+    }
+  },
+  bbsNewsAppendList: {
+    data: [],
+    request: {
+      order: "asc",
+      page: 1,
+      rows: 10,
       sort: "Sequence,ModifyDate"
     }
   }
@@ -27,7 +37,11 @@ const mutations = {
   },
   setCurrentBBS (state, current) {
     state.currentBbs = current;
-  }
+  },
+  setBBSNewsAppendList (state, value) {
+    state.bbsNewsAppendList.data = value.rows;
+    state.bbsNewsAppendList.total = value.total;
+  },
 };
 //actions提交的是mutations，相当于就是改变变量的方法的重写，但是，actions是可以进行异步操作的
 const actions = {
@@ -48,6 +62,17 @@ const actions = {
       ...params
     }).then(data => {
       commit('setBBS', data);
+    }).catch(error => console.log(error))
+  },
+  fetchBBSNewsAppendList ({
+    commit,
+    state
+  }, params = {}) {
+    return this.$http.post(api.bbsNewsAppendList, {
+      ...state.bbsNewsAppendList.request,
+      ...params
+    }).then(data => {
+      commit('setBBSNewsAppendList', data);
     }).catch(error => console.log(error))
   }
 };

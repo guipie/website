@@ -183,7 +183,7 @@
   </div>
 </template>
 <script>
-import { qnUpload } from "@/assets/config/qiniu.js";
+import { qnUpload } from "@/assets/js/qiniu.js";
 import Tags from "@/components/tags.vue";
 import articleCard from "@/components/content/content.vue";
 import microCard from "@/components/content/content-micro.vue";

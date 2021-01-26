@@ -3,30 +3,26 @@
     <div id="main">
       <!-- header -->
       <div id="header">
-        <h1>此页面数据被鬼吃了...
-          <span>
-            你应该懂得..
-          </span>
+        <h1>
+          此页面数据被鬼吃了..ERROR.
+          <span> 你应该懂得.. </span>
         </h1>
       </div>
       <!-- content -->
       <div id="content">
-        <ul class="nav">
-        </ul>
+        <ul class="nav"></ul>
       </div>
       <!-- footer -->
-      <div id="footer">
-        联系<a href="/">GuiPieApp@163.com</a>找到我
-      </div>
+      <div id="footer">联系<a href="/">GuiPieApp@163.com</a>找到我</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  layout: "empty"
-}
-</script> 
+  layout: "empty",
+};
+</script>
 <style scoped>
 * {
   margin: 0;
@@ -39,7 +35,7 @@ body {
 }
 body {
   background: url(/img404/tail-top.gif) left top repeat-x #140100;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 100%;
   line-height: 1.5em;
   color: #cbe0ff;
@@ -90,7 +86,7 @@ ol {
 #footer {
   font-family: Tahoma, Geneva, sans-serif;
   color: #333;
-  font-size:20px;
+  font-size: 20px;
   text-align: center;
   padding: 20px 0 0 0;
 }
@@ -171,4 +167,5 @@ h1 strong {
 }
 
 /*==========================================*/
-</style>> 
+</style>
+>
