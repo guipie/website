@@ -491,7 +491,7 @@ a {
 
 /* 帖子详情页 */
 .bbs-detail {
-  min-height: 300px;
+  min-height: 250px;
   position: relative;
   margin-top: 20px;
   display: flex;
@@ -520,7 +520,7 @@ a {
 .guajian {
   width: 60px;
   position: fixed;
-  right: 10%;
+  right: 15%;
   top: 40%;
 }
 
@@ -535,7 +535,7 @@ a {
 
 .bbs-detail-footer {
   position: absolute;
-  bottom: 2px;
+  bottom: 8px;
   font-size: small;
   color: #9a8282;
   right: 5px;

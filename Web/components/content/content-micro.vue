@@ -65,15 +65,8 @@
           {{ DateDiff(news.createDate) }}
         </el-col>
         <el-col class="interact" :span="12">
-          <el-button
-            class="el-icon-star-off"
-            @click="
-              news.disabled = true;
-              praises(news);
-            "
-            :disabled="news.praiseDisabled"
-          >
-            {{ news.praiseCount }}
+          <el-button @click="praises(news)" :disabled="news.praiseDisabled">
+            赞{{ news.praiseCount }}
           </el-button>
           <el-button class="el-icon-chat-square" @click="comments(news.newsId)">
             {{ news.commentCount }}
@@ -97,7 +90,7 @@
   </div>
 </template>
 <script>
-import { DateDiff } from "@/plugins/common";
+import { DateDiff } from "@/assets/js/common";
 import VideoPlayer from "@/components/content/video-player.vue";
 import VoicePlayer from "@/components/content/voice-player.vue";
 import Comments from "@/components/content/comment.vue";
@@ -160,6 +153,7 @@ export default {
       ]);
     },
     praises(news) {
+      news.disabled = true;
       let clone = {
         ...news,
         ...{ praiseDisabled: true },

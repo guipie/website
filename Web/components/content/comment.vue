@@ -1,14 +1,30 @@
 <template>
-  <div style="margin-top:60px;">
+  <div style="margin-top: 60px">
     <el-form ref="commentForm" :model="model">
-      <el-form-item prop="Coments" :rules="[{ required: true, message: '说点什么啊...', trigger: 'blur' }]">
-        <el-input type="textarea" placeholder="说点什么吧..." rows="5" v-model="model.Coments"></el-input>
+      <el-form-item
+        prop="Coments"
+        :rules="[{ required: true, message: '说点什么啊...', trigger: 'blur' }]"
+      >
+        <el-input
+          type="textarea"
+          placeholder="说点什么吧..."
+          rows="5"
+          v-model="model.Coments"
+        ></el-input>
       </el-form-item>
       <el-form-item>
         <el-radio-group v-model="model.Type">
-          <el-radio v-for="t in commentTypes" :key="t.key" :label="t.key">{{t.value}}</el-radio>
+          <el-radio v-for="t in commentTypes" :key="t.key" :label="t.key">{{
+            t.value
+          }}</el-radio>
         </el-radio-group>
-        <el-button type="primary" style="float:right;" @click="onSubmit" :loading="commenting">发布</el-button>
+        <el-button
+          type="primary"
+          style="float: right"
+          @click="onSubmit"
+          :loading="commenting"
+          >发布</el-button
+        >
       </el-form-item>
     </el-form>
     <div class="title">留言板</div>
@@ -16,30 +32,46 @@
     <div class="user-item">
       <div v-for="(item, index) in comments" :key="index" class="cell">
         <div class="primary">
-          <el-avatar size="medium">{{index+1}}</el-avatar>
+          <el-avatar size="medium">{{ index + 1 }}</el-avatar>
           <span class="name">{{ item.Creator }}</span>
           <span class="desc">{{ item.Coments }}</span>
         </div>
         <div class="footer">
-          <el-button type="text" class="time" icon="el-icon-time">{{DateDiff(item.CreateDate)}}</el-button>
-          <el-button type="text" class="right" icon="el-icon-chat-square" @click="reply(item)">
+          <el-button type="text" class="time" icon="el-icon-time">{{
+            DateDiff(item.CreateDate)
+          }}</el-button>
+          <el-button
+            type="text"
+            class="right"
+            icon="el-icon-chat-square"
+            @click="reply(item)"
+          >
             回复
-            <span>{{item.ReCount}}</span>
+            <span>{{ item.ReCount }}</span>
           </el-button>
-          <el-button @click="Praise(item)" type="text" class="right" icon="el-icon-star-off">
+          <el-button
+            @click="Praise(item)"
+            type="text"
+            class="right"
+            icon="el-icon-star-off"
+          >
             赞
-            <span>{{item.Praise}}</span>
+            <span>{{ item.Praise }}</span>
           </el-button>
         </div>
-        <div style="margin-top: 15px;" v-if="model.ParentId==item.Id">
+        <div style="margin-top: 15px" v-if="model.ParentId == item.Id">
           <div class="reclass" v-for="i in reComments" :key="i.Id">
-            <span class="reuser">{{i.Creator}}({{DateDiff(i.CreateDate)}})
-            </span>:
-            <span class="recomments">{{i.Coments}}</span>
+            <span class="reuser">{{ i.Creator }}({{ DateDiff(i.CreateDate) }}) </span>:
+            <span class="recomments">{{ i.Coments }}</span>
           </div>
           <el-input :placeholder="rePlaceholder" v-model="model.ReComents">
             <template slot="append">
-              <el-button type="primary" :loading="reCommenting" :disabled="!model.ReComents" @click="replySubmit(item)">
+              <el-button
+                type="primary"
+                :loading="reCommenting"
+                :disabled="!model.ReComents"
+                @click="replySubmit(item)"
+              >
                 回复
               </el-button>
             </template>
@@ -50,20 +82,18 @@
   </div>
 </template>
 <script>
-import {
-  DateDiff
-} from '~/plugins/common'
+import { DateDiff } from "@/assets/js/common";
 export default {
   props: ["type"],
   computed: {
-    comments () {
+    comments() {
       return this.$store.state.comment.comments.data;
     },
-    commentTypes () {
+    commentTypes() {
       return this.$store.state.dic.commentType;
     },
   },
-  data () {
+  data() {
     return {
       commenting: false,
       reCommenting: false,
@@ -71,82 +101,83 @@ export default {
       reComments: [],
       model: {
         ParentId: "",
-        Coments: '',
+        Coments: "",
         ReComents: "",
-        Type: 'website',
+        Type: "website",
         Creator: "游客",
-        CreateDate: new Date().toTimeString()
-      }
-    }
+        CreateDate: new Date().toTimeString(),
+      },
+    };
   },
-  mounted () {
+  mounted() {
     this.$store.commit("comment/setComments", {});
-    if (this.$route.params.id > 0)
-    {
+    if (this.$route.params.id > 0) {
       this.$store.dispatch("comment/fetchRootComments", [
-        { "name": "Type", "value": "news" },
-        { "name": "RelationId", "value": this.$route.params.id }
+        { name: "Type", value: "news" },
+        { name: "RelationId", value: this.$route.params.id },
       ]);
-    }
-    else if (this.type != "news")
-    {
+    } else if (this.type != "news") {
       this.$store.dispatch("dic/fetchCommentTypes");
       this.$store.dispatch("comment/fetchRootComments");
     }
   },
   methods: {
-    DateDiff (date) {
+    DateDiff(date) {
       return DateDiff(date);
     },
-    onSubmit () {
-      this.$refs['commentForm'].validate((valid) => {
-        if (valid)
-        {
+    onSubmit() {
+      this.$refs["commentForm"].validate((valid) => {
+        if (valid) {
           this.commenting = true;
           this.model.RelationId = this.newsId;
           this.model.type = this.type;
-          this.$store.dispatch("comment/addComments", this.model)
-            .then(m => {
+          this.$store
+            .dispatch("comment/addComments", this.model)
+            .then((m) => {
               this.commenting = false;
               if (m.status) this.model.Coments = "";
             })
-            .catch(ex => { this.commenting = false; console.log(ex); });
-        }
-        else
-          return false;
+            .catch((ex) => {
+              this.commenting = false;
+              console.log(ex);
+            });
+        } else return false;
       });
     },
-    reply (item) {
+    reply(item) {
       this.reComments = [];
       this.rePlaceholder = "回复@" + item.Creator;
       this.model.ParentId = this.model.ParentId == item.Id ? "" : item.Id;
       if (item.ReCount > 0)
-        this.$store.dispatch("comment/fetchReComments", item.Id)
-          .then(res => {
-            this.reComments = res.rows;
-          });
+        this.$store.dispatch("comment/fetchReComments", item.Id).then((res) => {
+          this.reComments = res.rows;
+        });
     },
-    replySubmit (item) {
-      if (this.model.ReComents)
-      {
+    replySubmit(item) {
+      if (this.model.ReComents) {
         this.ParentId = item.Id;
         this.reCommenting = true;
-        this.$store.dispatch("comment/addComments", { ...this.model, ...{ Coments: this.model.ReComents } })
-          .then(m => {
+        this.$store
+          .dispatch("comment/addComments", {
+            ...this.model,
+            ...{ Coments: this.model.ReComents },
+          })
+          .then((m) => {
             this.reCommenting = false;
             if (m.status) this.model.ReComents = this.model.Coments = "";
           })
-          .catch(ex => { this.reCommenting = false; console.log(ex); });
-      }
-      else
-        alert("输入回复..");
+          .catch((ex) => {
+            this.reCommenting = false;
+            console.log(ex);
+          });
+      } else alert("输入回复..");
     },
-    Praise (item) {
+    Praise(item) {
       this.$store.dispatch("comment/addCommentsPraise", item.Id);
     },
   },
-}
-</script>  
+};
+</script>
 <style scoped>
 .title {
   font-size: 16px;
@@ -196,4 +227,3 @@ export default {
   font: 12px Extra small;
 }
 </style>
- 

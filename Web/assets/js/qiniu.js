@@ -12,7 +12,7 @@ const config = {
 import * as qiniu from 'qiniu-js';
 import {
   DateFormat
-} from '~/plugins/common'
+} from '@/assets/js/common'
 export const qnUpload = async (file, watch, success, fail, token) => {
   let domain;
   try

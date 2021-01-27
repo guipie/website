@@ -18,24 +18,34 @@
       </el-col>
       <el-col :span="18" class="bbs-detail-right">
         <div class="bbs-detail-content" v-html="articleDetail.content"></div>
+        <div class="bbs-detail-footer" style="font-size: 16px; color: #000">
+          <span :title="articleDetail.createDate">
+            {{ DateDiff(articleDetail.createDate) }}
+          </span>
+          <span v-for="t in Split(articleDetail.tags)" :key="t"> #{{ t }}# </span>
+          <span class="replyComment" @click="alert(111)">
+            <i class="el-icon-chat-square"></i>123
+          </span>
+        </div>
       </el-col>
     </el-row>
-    <el-row v-for="append in appendList.data" :key="append.id" class="bbs-detail">
+    <el-row
+      v-for="(append, index) in appendList.data"
+      :key="append.id"
+      class="bbs-detail"
+    >
       <el-col :span="6" class="bbs-detail-left">
         <div class="avatar">
-          <el-avatar
-            :size="60"
-            src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
-          >
+          <el-avatar :size="60" :src="$website.GetFileUrl(append.headImageUrl)">
           </el-avatar>
-          <div>我真的好想你啊</div>
+          <div>{{ append.userTrueName }}</div>
         </div>
       </el-col>
       <el-col :span="18" class="bbs-detail-right">
         <div class="bbs-detail-content" v-html="append.content"></div>
         <div class="bbs-detail-footer">
-          <span title="2020-07-18 15:16:16">6月前</span>
-          <span>1楼</span>
+          <span>{{ append.createDate }}</span>
+          <span>{{ getFloors(index) }}楼</span>
           <span class="replyComment" @click="alert(111)">
             <i class="el-icon-chat-square"></i>123
           </span>
@@ -44,10 +54,23 @@
     </el-row>
     <div class="guajian">
       <el-button icon="el-icon-star-on" circle></el-button>
-      <el-button icon="el-icon-chat-line-square" circle></el-button>
+      <el-button icon="el-icon-chat-line-square" circle @click="replyTo()"> </el-button>
       <el-button icon="el-icon-share" circle></el-button>
-      <el-button icon="el-icon-refresh-left" circle></el-button>
+      <nuxt-link :to="`/bbs/${$parent.bbsDetail.name}/${articleDetail.newsId}`">
+        <el-button icon="el-icon-refresh-left" circle></el-button>
+      </nuxt-link>
     </div>
+    <ul class="el-pager">
+      <nuxt-link
+        v-for="page in Math.ceil(appendList.total / 6)"
+        :to="`?page=${page}`"
+        :key="page"
+      >
+        <li class="number" :class="page == ($route.query.page || 1) ? 'active' : ''">
+          {{ page }}
+        </li>
+      </nuxt-link>
+    </ul>
     <div id="bbsReply"></div>
     <el-button
       type="primary"
@@ -59,10 +82,11 @@
     >
   </div>
 </template>
-
 <script>
+import { DateDiff, Split } from "@/assets/js/common";
 let editor = null;
 export default {
+  scrollToTop: true,
   data() {
     return {
       replyLoading: false,
@@ -72,6 +96,8 @@ export default {
   validate({ params }) {
     return /^\d+$/.test(params.id);
   },
+  watchQuery: true,
+  watchQuery: ["page"],
   async asyncData({ route, redirect, $http, store }) {
     let [articleDetail] = await Promise.all([
       $http.post("AppApi/News/" + route.params.id),
@@ -112,6 +138,9 @@ export default {
     }
   },
   methods: {
+    replyTo() {
+      editor.config.onblur();
+    },
     replySubmit() {
       this.replyModel.NewsId = this.articleDetail.newsId;
       this.replyModel.Content = editor.txt.html();
@@ -128,8 +157,29 @@ export default {
           this.replyLoading = false;
         });
     },
+    getFloors(index) {
+      return ((this.$route.query.page || 1) - 1) * 6 + (index + 1);
+    },
+    DateDiff: DateDiff,
+    Split: Split,
   },
 };
 </script>
 
-<style></style>
+<style>
+.el-pager li {
+  margin: 5px;
+  background-color: #f4f4f5;
+  color: #606266;
+  min-width: 40px;
+  border-radius: 2px;
+}
+.el-pager li:not(.disabled).active {
+  background-color: #070707;
+  color: #fff;
+}
+.el-pager li.active {
+  color: #070707;
+  cursor: not-allowed;
+}
+</style>

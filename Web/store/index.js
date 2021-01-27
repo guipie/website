@@ -1,9 +1,10 @@
 /**
  * @file 根数据状态，仅用以调度初始化任务 / ES module
  */
+
 import {
   uaParser
-} from '~/plugins/common'
+} from '@/assets/js/common'
 export const actions = {
 
   nuxtServerInit (store, {

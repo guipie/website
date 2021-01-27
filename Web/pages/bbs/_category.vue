@@ -41,30 +41,19 @@
 <script>
 export default {
   layout: "empty",
-  async asyncData({ route, redirect, $http, store }) {
+  async asyncData({ route, redirect, $http, store, $cookies }) {
     let [res] = await Promise.all([
       $http.post("AppApi/newsType/" + encodeURI(route.params.category)),
     ]);
     if (res.data.id > 0) {
-      let [isFollow] = await Promise.all([
-        $http.post("AppApi/newsType/Follow/Exist/" + res.data.id),
-      ]);
       //获取该论坛帖子列表
       store.commit("bbs/setCurrentBBS", res.data);
-      let wheres = [{ name: "BbsId", value: res.data.id }];
-      await Promise.all([
-        store.dispatch("news/fetchNewsList", {
-          page: route.query.page || 1,
-          sort: "ModifyDate",
-          rows: 5,
-          wheres: JSON.stringify(wheres),
-        }),
+      let [isFollow] = await Promise.all([
+        $http.post("AppApi/newsType/Follow/Exist/" + res.data.id),
       ]);
       return { bbsDetail: res.data, isFollow };
     } else redirect("/404?p=" + route.path);
   },
-  watchQuery: true,
-  watchQuery: ["page"],
   mounted() {},
   methods: {
     followBbs() {

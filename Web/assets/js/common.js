@@ -60,7 +60,7 @@ export const DateDiff = (dateTime) => {
     result = parseInt(diffMinute) + "分钟前";
   } else
   {
-    result = "刚刚发表";
+    result = "刚刚";
   }
   return result;
 }
@@ -82,4 +82,14 @@ export const DateFormat = (fmt, dateTime) => {
     if (new RegExp("(" + k + ")").test(fmt))
       fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
   return fmt;
+
+
+
+}
+
+export const Split = (val, s) => {
+  s = s ?? ',';
+  if (val)
+    return val.toString().split(s);
+  return [];
 }
