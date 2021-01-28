@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { isBrowser } from "@/environment";
 let currentPlayer;
 export default {
   props: {
@@ -34,7 +35,7 @@ export default {
   },
   methods: {
     palyerInit() {
-      if (process.browser) {
+      if (isBrowser) {
         let _this = this;
         let Player = require("xgplayer");
         require("xgplayer-mp4");

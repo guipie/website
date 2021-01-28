@@ -84,13 +84,18 @@
 <script>
 import { DateDiff } from "@/assets/js/common";
 export default {
-  props: ["type"],
+  props: ["type", "relationId"],
   computed: {
     comments() {
       return this.$store.state.comment.comments.data;
     },
     commentTypes() {
       return this.$store.state.dic.commentType;
+    },
+  },
+  watch: {
+    relationId(newVal, oldVal) {
+      console.log(newVal, oldVal);
     },
   },
   data() {
@@ -111,14 +116,16 @@ export default {
   },
   mounted() {
     this.$store.commit("comment/setComments", {});
-    if (this.$route.params.id > 0) {
+    if (this.relationId > 0) {
+      this.$store.dispatch("comment/fetchRootComments", [
+        { name: "Type", value: this.type },
+        { name: "RelationId", value: this.relationId },
+      ]);
+    } else {
       this.$store.dispatch("comment/fetchRootComments", [
         { name: "Type", value: "news" },
         { name: "RelationId", value: this.$route.params.id },
       ]);
-    } else if (this.type != "news") {
-      this.$store.dispatch("dic/fetchCommentTypes");
-      this.$store.dispatch("comment/fetchRootComments");
     }
   },
   methods: {

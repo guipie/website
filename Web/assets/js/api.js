@@ -1,5 +1,12 @@
-/**
- * 文章内容相关接口 
- */
-export const likeNews = (newsId) => this.$http.post("AppApi/Like/" + newsId);//收藏喜欢文章/帖子
-export const praiseNews = (newsId) => this.$http.post("AppApi/Praise/" + newsId);//点赞文章/帖子
+const modulesFiles = require.context("@/assets/js/api", true, /\.js$/);
+const modules = modulesFiles.keys().reduce((modules, modulePath) => {
+  const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, "$1");
+
+  const value = modulesFiles(modulePath);
+
+  modules[moduleName] = value.default || value;
+
+  return modules;
+}, {});
+
+export default modules;

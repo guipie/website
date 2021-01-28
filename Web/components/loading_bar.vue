@@ -11,13 +11,13 @@ export default {
     loading: false,
   }),
   methods: {
-    start () {
-      this.$refs["loadingBar"].className = 'spinner';
+    start() {
+      this.$refs["loadingBar"].className = "spinner";
     },
-    finish () {
-      this.$refs["loadingBar"].className = 'spinnerHide';
+    finish() {
+      this.$refs["loadingBar"].className = "spinnerHide";
     },
-    error (txt) {
+    error(txt) {
       this.loading = false;
       this.errorTxt = txt || "error";
     },
@@ -32,7 +32,7 @@ export default {
 .spinner {
   display: block;
   text-align: center;
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 40%;
   z-index: 10000000000;

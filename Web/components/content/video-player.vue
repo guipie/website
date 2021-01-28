@@ -1,8 +1,9 @@
 <template>
-  <div :id="'player_'+newsId"></div>
+  <div :id="'player_' + newsId"></div>
 </template>
 
 <script>
+import { isBrowser } from "@/environment";
 let currentPlayer = null;
 export default {
   props: {
@@ -11,41 +12,40 @@ export default {
       required: true,
     },
     poster: {
-      type: String
+      type: String,
     },
     newsId: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
-  data () {
+  data() {
     return {};
   },
-  mounted () {
+  mounted() {
     this.palyerInit();
   },
   methods: {
-    palyerInit () {
-      if (process.browser)
-      {
+    palyerInit() {
+      if (isBrowser) {
         let _this = this;
         let Player = require("xgplayer");
         currentPlayer = new Player({
-          id: 'player_' + this.newsId,
+          id: "player_" + this.newsId,
           url: this.videoUrl,
           preloadTime: 10, // 默认预加载 10 秒
           videoInit: true, //初始化显示视频首帧
           // autoplay: true,
           // muted: true,
-          poster: (this.poster || ""),
+          poster: this.poster || "",
           playsinline: true,
           playbackRate: [0.5, 0.75, 1, 1.5, 2],
           fluid: true, //使播放器宽度跟随父元素的宽度大小变化
           errorTips: `<div class="content"><img src="/img/playerror.png" alt="">
-                      <div class="promptText">抱歉，播放器出错了，您关闭所有播放器及音乐再试.</div>`
+                      <div class="promptText">抱歉，播放器出错了，您关闭所有播放器及音乐再试.</div>`,
         });
       }
-    }
+    },
   },
 };
 </script>

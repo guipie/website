@@ -18,13 +18,18 @@
       </el-col>
       <el-col :span="18" class="bbs-detail-right">
         <div class="bbs-detail-content" v-html="articleDetail.content"></div>
-        <div class="bbs-detail-footer" style="font-size: 16px; color: #000">
-          <span :title="articleDetail.createDate">
-            {{ DateDiff(articleDetail.createDate) }}
+        <div class="bbs-detail-footer">
+          <span v-if="articleDetail.modifyDate">
+            <!-- {{ articleDetail.modifier }} -->
+            {{ DateDiff(articleDetail.modifyDate) }}回复
           </span>
+          <span v-else> {{ DateDiff(articleDetail.createDate) }}发帖 </span>
           <span v-for="t in Split(articleDetail.tags)" :key="t"> #{{ t }}# </span>
           <span class="replyComment" @click="alert(111)">
             <i class="el-icon-chat-square"></i>123
+          </span>
+          <span class="replyComment" @click="$api.news.PraiseNews(articleDetail.newsId)">
+            顶
           </span>
         </div>
       </el-col>
@@ -46,17 +51,25 @@
         <div class="bbs-detail-footer">
           <span>{{ append.createDate }}</span>
           <span>{{ getFloors(index) }}楼</span>
-          <span class="replyComment" @click="alert(111)">
-            <i class="el-icon-chat-square"></i>123
+          <span class="replyComment" @click="comments(append, index)">
+            <i class="el-icon-chat-square"></i>
           </span>
         </div>
       </el-col>
     </el-row>
     <div class="guajian">
-      <el-button icon="el-icon-star-on" circle></el-button>
+      <el-button
+        icon="el-icon-star-on"
+        circle
+        @click="$api.news.LikeNews(articleDetail.newsId)"
+      ></el-button>
       <el-button icon="el-icon-chat-line-square" circle @click="replyTo()"> </el-button>
       <el-button icon="el-icon-share" circle></el-button>
-      <nuxt-link :to="`/bbs/${$parent.bbsDetail.name}/${articleDetail.newsId}`">
+      <nuxt-link
+        :to="`/bbs/${$parent.bbsDetail.name}/${
+          articleDetail.newsId
+        }?refresh=${new Date().getTime()}`"
+      >
         <el-button icon="el-icon-refresh-left" circle></el-button>
       </nuxt-link>
     </div>
@@ -66,12 +79,12 @@
         :to="`?page=${page}`"
         :key="page"
       >
-        <li class="number" :class="page == ($route.query.page || 1) ? 'active' : ''">
+        <li class="number" :class="page == currentPage ? 'active' : ''">
           {{ page }}
         </li>
       </nuxt-link>
     </ul>
-    <div id="bbsReply"></div>
+    <div id="bbsReply" class="bbsReply"></div>
     <el-button
       type="primary"
       plain
@@ -80,38 +93,60 @@
       @click="replySubmit()"
       >回复</el-button
     >
+
+    <el-dialog :title="commentTitle" :visible.sync="commentsDialog" width="50%" center>
+      <div>
+        <NewsComment :type="'newsAppend'" :relationId="commentNewsId"></NewsComment>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+import { isBrowser } from "@/environment";
 import { DateDiff, Split } from "@/assets/js/common";
+import NewsComment from "@/components/content/comment";
 let editor = null;
 export default {
-  scrollToTop: true,
+  components: { NewsComment },
+  // scrollToTop: true,
+  watch: {
+    $route: {
+      handler: function (val, oldVal) {
+        scrollTo(0, 0);
+      },
+      // 深度观察监听
+      deep: true,
+    },
+  },
   data() {
     return {
       replyLoading: false,
       replyModel: {},
+      commentsDialog: false,
+      commentNewsId: 0,
+      commentTitle: "留下您的诡记.",
     };
   },
   validate({ params }) {
     return /^\d+$/.test(params.id);
   },
   watchQuery: true,
-  watchQuery: ["page"],
+  watchQuery: ["page", "refresh"],
   async asyncData({ route, redirect, $http, store }) {
     let [articleDetail] = await Promise.all([
       $http.post("AppApi/News/" + route.params.id),
     ]);
+    let currentPage = route.query.page || 1;
     if (articleDetail.newsId > 0) {
       await Promise.all([
         store.dispatch("bbs/fetchBBSNewsAppendList", {
-          page: route.query.page || 1,
+          page: currentPage,
           sort: "CreateDate",
           rows: 6,
           wheres: JSON.stringify([{ name: "NewsId", value: articleDetail.newsId }]),
         }),
       ]);
-      return { articleDetail };
+      return { articleDetail, currentPage };
     } else redirect("/404?p=" + route.path);
   },
   computed: {
@@ -120,7 +155,8 @@ export default {
     },
   },
   mounted() {
-    if (process.browser) {
+    console.log(this.currentPage);
+    if (isBrowser) {
       let E = require("wangeditor");
       editor = new E("#bbsReply");
       editor.config.zIndex = 10;
@@ -134,12 +170,18 @@ export default {
         "video",
         "image",
       ];
+      editor.config.uploadImgShowBase64 = true;
       editor.create();
     }
   },
   methods: {
+    comments(append, index) {
+      this.commentNewsId = append.id;
+      this.commentsDialog = true;
+      this.commentTitle = `在${this.getFloors(index)}楼留下您的诡记..`;
+    },
     replyTo() {
-      editor.config.onblur();
+      document.querySelector(".bbsReply").scrollIntoView();
     },
     replySubmit() {
       this.replyModel.NewsId = this.articleDetail.newsId;
@@ -158,7 +200,7 @@ export default {
         });
     },
     getFloors(index) {
-      return ((this.$route.query.page || 1) - 1) * 6 + (index + 1);
+      return (this.currentPage - 1) * 6 + index + 1;
     },
     DateDiff: DateDiff,
     Split: Split,

@@ -127,6 +127,7 @@
 <script>
 let editor = null;
 import { qnUpload } from "@/assets/js/qiniu.js";
+import { isBrowser } from "@/environment";
 export default {
   data() {
     return {
@@ -157,7 +158,7 @@ export default {
     },
   },
   mounted() {
-    if (process.browser) {
+    if (isBrowser) {
       let E = require("wangeditor");
       let _this = this;
       editor = new E("#content");

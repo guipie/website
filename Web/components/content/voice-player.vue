@@ -1,8 +1,8 @@
 <template>
-  <div :id="'player_'+newsId"></div>
+  <div :id="'player_' + newsId"></div>
 </template>
-<script> 
-
+<script>
+import { isBrowser } from "@/environment";
 let player = null;
 export default {
   props: {
@@ -12,41 +12,40 @@ export default {
     },
     newsId: {
       type: Number,
-      required: true
+      required: true,
     },
-    poster: { type: String }
+    poster: { type: String },
   },
-  data () {
+  data() {
     return {};
   },
-  mounted () {
+  mounted() {
     this.palyerInit();
   },
   methods: {
-    palyerInit () {
-      if (process.browser)
-      {
+    palyerInit() {
+      if (isBrowser) {
         require("xgplayer");
-        let Music = require('xgplayer-music');
+        let Music = require("xgplayer-music");
         player = new Music({
-          id: 'player_' + this.newsId,
+          id: "player_" + this.newsId,
           url: [
             {
               src: this.voiceUrl,
-              name: '',
-              vid: '000001',
-              poster: this.poster
-            }
+              name: "",
+              vid: "000001",
+              poster: this.poster,
+            },
           ],
           volume: 0.8,
           volumeShow: true,
-          width: '100%',
+          width: "100%",
           height: 50,
           // preloadNext: true,
-          switchKeepProgress: false
-        })
+          switchKeepProgress: false,
+        });
       }
-    }
+    },
   },
 };
-</script> 
+</script>

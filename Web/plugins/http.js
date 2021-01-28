@@ -1,6 +1,7 @@
 console.log("http.js");
 import axios from 'axios';
-import { Api_Domain } from "@/environment"
+import { Api_Domain, isBrowser } from "@/environment"
+import apis from "@/assets/js/api.js"
 let myApp;
 // create an axios instance 
 const service = axios.create({
@@ -16,7 +17,7 @@ service.interceptors.request.use(config => {
   config.headers['Content-Type'] = 'application/json';
   //  config.headers['Authorization'] = myApp.$cookies.get('token') || "";
   config.headers['Authorization'] = myApp.store.getters.token;
-  if (process.browser && !config.data?.noLoading)
+  if (isBrowser && !config.data?.noLoading)
     myApp.store.commit("global/requestLoading");
   return config;
 }, error => {
@@ -29,13 +30,13 @@ service.interceptors.response.use(
   /**  * If you want to get http information such as headers or status  * Please return  response => response  */
   /**  * Determine the request status by custom code  * Here is just an example  * You can also judge the status by HTTP Status Code  */
   response => {
-    if (process.browser)
+    if (isBrowser)
       myApp.store.commit("global/requestLoaded");
     let res = response.data;
     if (res == "" || res == null || res == undefined) return Promise.resolve({});
     if (res.status === 1)
     { return Promise.resolve(res) }
-    else if (res.status === false && process.browser)
+    else if (res.status === false && isBrowser)
     {
       $nuxt.$notify({
         title: '失败警告',
@@ -43,7 +44,7 @@ service.interceptors.response.use(
         type: 'warning'
       });
     }
-    else if (res.status === true && process.browser && res.message)
+    else if (res.status === true && isBrowser && res.message)
     {
       $nuxt.$notify({
         title: '成功提示',
@@ -54,21 +55,29 @@ service.interceptors.response.use(
     return Promise.resolve(res)
   },
   error => {
-    if (process.browser)
-      myApp.store.commit("global/requestLoaded");
-    let res = error.response;
-    if (res && res.status == 401 && process.browser)
+    if (isBrowser)
     {
-      $nuxt.$notify({
-        title: '授权警告',
-        message: '您没有访问授权，请登录或授权后再试..',
-        type: 'warning'
-      });
-      if (process.browser)
+      myApp.store.commit("global/requestLoaded");
+      let res = error.response;
+      if (res && res.status == 401)
       {
-        $nuxt.$store.commit("user/setUser", {});
-        $nuxt.$loginDialog();
+        $nuxt.$notify({
+          title: '授权警告',
+          message: '您没有访问授权，请登录或授权后再试..',
+          type: 'warning'
+        });
+        if (isBrowser)
+        {
+          $nuxt.$store.commit("user/setUser", {});
+          $nuxt.$loginDialog();
+        }
       }
+      else
+        return $nuxt.$notify({
+          title: '错误提示',
+          message: '后台又挂了...',
+          type: 'error'
+        });
     }
     return Promise.reject(error)
   }
@@ -77,19 +86,31 @@ service.interceptors.response.use(
 //1) 自定义函数
 const request = {
   get: (url, params) => {
-    params = params || {};
-    return service({
-      url: url,
-      method: 'get',
-      params
-    });
+    try
+    {
+      params = params || {};
+      return service({
+        url: url,
+        method: 'get',
+        params
+      });
+    } catch (error)
+    {
+      console.log(error);
+    }
   },
   post: (url, params) => {
-    return service({
-      url: url,
-      method: 'post',
-      data: params
-    })
+    try
+    {
+      return service({
+        url: url,
+        method: 'post',
+        data: params
+      })
+    } catch (error)
+    {
+      console.log(error);
+    }
   },
   //......
 }
@@ -97,5 +118,9 @@ export default ({
   app
 }, inject) => {
   myApp = app;
-  inject('http', request)
+  inject('http', request);
+  var apiObject = {};
+  for (var i in apis)
+    apiObject[i] = apis[i](request);
+  inject("api", apiObject);
 }
