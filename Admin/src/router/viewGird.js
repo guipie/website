@@ -13,5 +13,9 @@ let viewGird = [{
         path: '/UserSign',
         name: 'UserSign',
         component: () => import('@/views/System/UserSign.vue')
+    }    ,{
+        path: '/Chat_Group',
+        name: 'Chat_Group',
+        component: () => import('@/views/business/Chat_Group.vue')
     }]
 export default viewGird;

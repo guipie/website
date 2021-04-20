@@ -10,4 +10,4 @@ export const isModern = process && process.modern
 
 
 export const Api_Domain = isDevMode ? "http://127.0.0.1:9991/" : "http://guipie.com:90/";
-export const File_Domain = isDevMode ? "http://127.0.0.1:9991/" : "http://guipie.com:90/";
+export const File_Domain = isDevMode ? "http://gptest.goodthing.live" : "http://guipie.com:90/";
