@@ -35,10 +35,5 @@
 * 微信:s-b-c-w
 * web: [诡瞥](http://guipie.com) 
 
-##捐助开发者
-在兴趣的驱动下,写一个`免费`的东西，有欣喜，也还有汗水，如果你喜欢这个作品，支持一下哈。
-| 微信 | 支付宝 |
-|--|--|
-| ![微信](http://guipie.com/weixin.jpg) | ![支付宝](http://guipie.com/zfb.jpg) | 
 
 
